@@ -20,21 +20,6 @@
         </div>
       </form>
     </b-container>
-    <b-alert
-      v-model="showAlert"
-      class="position-fixed fixed-top m-0 rounded-0"
-      style="z-index: 2000"
-      variant="success"
-      dismissible
-      >{{ alertText }}</b-alert
-    ><b-alert
-      v-model="showAlert2"
-      class="position-fixed fixed-top m-0 rounded-0"
-      style="z-index: 2000"
-      variant="danger"
-      dismissible
-      >{{ errorText }}</b-alert
-    >
   </div>
 </template>
 
@@ -64,11 +49,11 @@ export default {
     },
     login() {
       if (this.user === "") {
-        this.showError("Devi inserire lo username");
+        this.error("Devi inserire lo username");
         return;
       }
       if (this.pass === "") {
-        this.showError("Devi inserire la password");
+        this.error("Devi inserire la password");
         return;
       }
 
@@ -85,19 +70,27 @@ export default {
             name: "Home",
           });
         } else {
-          self.showError("Nome utente o password non sono corretti");
+          self.error("Nome utente o password non sono corretti");
         }
       });
     },
-    showError(text) {
-      this.errorText = text;
-      this.showAlert2 = true;
+    error(message) {
+      message = message ?? "Errore";
+      this.$notify.error({
+        title: "Errore",
+        message,
+      });
     },
+    success(text) {
+      this.$notify.success({
+        title: text.title,
+        message: text.message,
+      });
+    }
   },
   mounted() {
     if (this.$route.params.alertText) {
-      this.showAlert = true;
-      this.alertText = this.$route.params.alertText;
+      this.success(this.$route.params.alertText);
     }
   },
 };

@@ -33,14 +33,6 @@
         </div>
       </form>
     </b-container>
-    <b-alert
-      v-model="showError"
-      class="position-fixed fixed-top m-0 rounded-0"
-      style="z-index: 2000"
-      variant="danger"
-      dismissible
-      >{{ errorText }}</b-alert
-    >
   </div>
 </template>
 
@@ -58,26 +50,24 @@ export default {
       username: "",
       pass1: "",
       pass2: "",
-      errorText: String,
-      showError: false,
     };
   },
   methods: {
     async register() {
       if (this.username === "") {
-        this.showAlert("Devi inserire lo username");
+        this.error("Devi inserire lo username");
         return;
       }
       if (this.pass1 === "") {
-        this.showAlert("Devi inserire la password");
+        this.error("Devi inserire la password");
         return;
       }
       if (this.pass2 === "") {
-        this.showAlert("Devi ripetere la password");
+        this.error("Devi ripetere la password");
         return;
       }
       if (this.pass1 !== this.pass2) {
-        this.showAlert("Le password non coincidono");
+        this.error("Le password non coincidono");
         return;
       }
 
@@ -86,14 +76,16 @@ export default {
       let item = { user: this.username, pass: encryptedPass };
       this.isElementInTable(item).then((response) => {
         if (response) {
-          self.showAlert("Il nome utente inserito non è disponibile");
+          self.error("Il nome utente inserito non è disponibile");
         } else {
           self.$store.commit("addElement", { tableName: "account", item });
           self.$router.push({
             name: "Login",
             params: {
-              alertText:
-                "Registrazione effettuata. Accedi con i dati appena inseriti",
+              alertText: {
+                title: "Registrazione effettuata",
+                message: "Accedi con i dati appena inseriti",
+              },
             },
           });
         }
@@ -112,13 +104,12 @@ export default {
     login() {
       this.$router.push({ name: "Login" });
     },
-    showAlert(text) {
-      this.errorText = text;
-      this.showError = true;
+    error(message) {
+      this.$notify.error({
+        title: "Errore",
+        message,
+      });
     },
-  },
-  mounted() {
-    this.showError = false;
   },
 };
 </script>
