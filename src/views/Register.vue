@@ -1,5 +1,5 @@
 <template>
-  <div style="margin-top: 5%">
+  <div>
     <b-container>
       <form>
         <p class="h4 text-center mb-4">Registrati</p>
