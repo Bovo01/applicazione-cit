@@ -9,18 +9,21 @@
             icon="user"
             type="text"
             v-model="username"
+            @keydown.enter.native="register()"
           />
           <mdb-input
             label="Password"
             icon="lock"
             type="password"
             v-model="pass1"
+            @keydown.enter.native="register()"
           />
           <mdb-input
             label="Ripeti password"
             icon="lock"
             type="password"
             v-model="pass2"
+            @keydown.enter.native="register()"
           />
         </div>
         <div class="text-center" style="margin-top: 10%">

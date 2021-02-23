@@ -1,24 +1,29 @@
 <template>
   <div>
     <b-container>
-      <form>
-        <p class="h4 text-center mb-4">Accedi</p>
-        <div class="grey-text">
-          <mdb-input label="Username" icon="user" type="email" v-model="user" />
-          <mdb-input
-            label="Password"
-            icon="lock"
-            type="password"
-            v-model="pass"
-          />
-        </div>
-        <div class="text-center" style="margin-top: 10%">
-          <el-button type="success" plain @click="login()">Accedi</el-button>
-          <el-button type="primary" plain @click="register()"
-            >Registrati</el-button
-          >
-        </div>
-      </form>
+      <p class="h4 text-center mb-4">Accedi</p>
+      <div class="grey-text">
+        <mdb-input
+          label="Username"
+          icon="user"
+          type="email"
+          v-model="user"
+          @keydown.enter.native="login()"
+        />
+        <mdb-input
+          label="Password"
+          icon="lock"
+          type="password"
+          v-model="pass"
+          @keydown.enter.native="login()"
+        />
+      </div>
+      <div class="text-center" style="margin-top: 10%">
+        <el-button type="success" plain @click="login()">Accedi</el-button>
+        <el-button type="primary" plain @click="register()"
+          >Registrati</el-button
+        >
+      </div>
     </b-container>
   </div>
 </template>
@@ -86,7 +91,7 @@ export default {
         title: text.title,
         message: text.message,
       });
-    }
+    },
   },
   mounted() {
     if (this.$route.params.alertText) {
