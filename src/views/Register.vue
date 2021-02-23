@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="margin-top: 5%">
     <b-container>
       <form>
         <p class="h4 text-center mb-4">Registrati</p>
@@ -23,12 +23,12 @@
             v-model="pass2"
           />
         </div>
-        <div class="text-center">
-          <b-button variant="outline-dark" @click="login()"
-            >Torna al login</b-button
+        <div class="text-center" style="margin-top: 10%">
+          <el-button type="info" plain @click="login()"
+            >Torna al login</el-button
           >
-          <b-button variant="outline-success" @click="register()"
-            >Registrati</b-button
+          <el-button type="success" plain @click="register()"
+            >Registrati</el-button
           >
         </div>
       </form>

@@ -13,6 +13,7 @@ import {
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import { firestorePlugin } from 'vuefire'
+import './plugins/element.js'
 
 Vue.use(firestorePlugin)
 
