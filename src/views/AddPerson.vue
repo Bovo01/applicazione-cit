@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import Navbar from "@/components/Navbar.vue";
+import Navbar from "@/components/Navbar";
 
 export default {
   components: {
@@ -57,9 +57,12 @@ export default {
       }
       this.$store.commit("addElement", {
         tableName: "persone",
-        item: { birth_date: this.birth_date ?? null, nome: this.nome },
+        item: {
+          birth_date: this.dateToString(this.birth_date) ?? null,
+          nome: this.nome,
+        },
       });
-      this.$router.push({ name: "Home" });
+      this.$router.push({ name: "Elenco persone" });
     },
     error(message) {
       message = message ?? "Errore";
@@ -67,6 +70,19 @@ export default {
         title: "Errore",
         message,
       });
+    },
+    dateToString(date) {
+      if (date === undefined || date === "")
+        return undefined;
+      return (
+        (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) +
+        "/" +
+        (date.getMonth() < 9
+          ? "0" + (date.getMonth() + 1)
+          : date.getMonth() + 1) +
+        "/" +
+        date.getFullYear()
+      );
     },
   },
 };
