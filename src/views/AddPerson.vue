@@ -1,6 +1,6 @@
 <template>
   <div>
-    <navbar></navbar>
+    <navbar />
     <b-container>
       <!-- Nome -->
       <b-row align-v="center" class="my-2">
@@ -65,7 +65,7 @@ export default {
       message = message ?? "Errore";
       this.$notify.error({
         title: "Errore",
-        message
+        message,
       });
     },
   },

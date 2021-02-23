@@ -1,6 +1,6 @@
 <template>
   <div>
-    <navbar></navbar>
+    <navbar />
     <b-container class="text-center">
       <h3>
         Buongiorno <b>{{ $store.getters.user }}</b> e benvenuto
