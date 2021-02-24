@@ -5,35 +5,34 @@
       <!-- Nome -->
       <b-row align-v="center" class="my-2">
         <b-col align="right" align-self="end">
-          <label class="demonstration">Nome</label></b-col
-        >
+          <label class="demonstration">Nome</label>
+        </b-col>
         <b-col align="left">
-          <el-input placeholder="Inserisci il nome" v-model="nome"></el-input
-        ></b-col>
+          <el-input placeholder="Inserisci il nome" v-model="nome" />
+        </b-col>
       </b-row>
       <!-- Data di nascita -->
       <b-row align-v="center" class="my-2">
         <b-col align="right" align-self="end">
-          <label class="demonstration">Data di nascita</label></b-col
-        >
+          <label class="demonstration">Data di nascita</label>
+        </b-col>
         <b-col align="left">
           <el-date-picker
             v-model="birth_date"
             type="date"
             placeholder="Seleziona data"
             format="dd/MM/yyyy"
-          >
-          </el-date-picker
-        ></b-col>
+          />
+        </b-col>
       </b-row>
       <!-- Bottoni footer -->
       <div class="text-center" style="margin-top: 10%">
-        <el-button type="success" plain @click="modifica()" v-if="edit"
-          >Modifica persona</el-button
-        >
-        <el-button type="success" plain @click="insert()" v-else
-          >Aggiungi persona</el-button
-        >
+        <el-button type="success" plain @click="modifica()" v-if="edit">
+          Modifica persona
+        </el-button>
+        <el-button type="success" plain @click="insert()" v-else>
+          Aggiungi persona
+        </el-button>
       </div>
     </b-container>
   </div>

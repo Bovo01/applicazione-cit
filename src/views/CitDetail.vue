@@ -10,9 +10,11 @@
             <label>Descrizione:</label>
           </b-col>
           <b-col align="left">
-            <label>{{
-              cit.description ? cit.description : "Descrizione non inserita"
-            }}</label>
+            <label>
+              {{
+                cit.description ? cit.description : "Descrizione non inserita"
+              }}
+            </label>
           </b-col>
         </b-row>
         <!-- Data -->

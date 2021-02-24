@@ -27,12 +27,12 @@
           />
         </div>
         <div class="text-center" style="margin-top: 10%">
-          <el-button type="info" plain @click="login()"
-            >Torna al login</el-button
-          >
-          <el-button type="success" plain @click="register()"
-            >Registrati</el-button
-          >
+          <el-button type="info" plain @click="login()">
+            Torna al login
+          </el-button>
+          <el-button type="success" plain @click="register()">
+            Registrati
+          </el-button>
         </div>
       </form>
     </b-container>

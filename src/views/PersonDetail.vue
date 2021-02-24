@@ -7,8 +7,8 @@
         <!-- Data di nascita -->
         <b-row align-v="center" class="my-2">
           <b-col align="right" align-self="end">
-            <label>Data di nascita:</label></b-col
-          >
+            <label>Data di nascita:</label>
+          </b-col>
           <b-col align="left">
             <label>{{
               person.birth_date
@@ -19,7 +19,11 @@
         </b-row>
       </div>
       <!-- Bottoni footer -->
-      <div class="text-center" style="margin-top: 10%" v-if="this.$store.getters.admin">
+      <div
+        class="text-center"
+        style="margin-top: 10%"
+        v-if="this.$store.getters.admin"
+      >
         <el-button type="warning" plain @click="edit()">Modifica</el-button>
         <el-button type="danger" plain @click="elimina()">Elimina</el-button>
       </div>

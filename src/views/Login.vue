@@ -20,9 +20,9 @@
       </div>
       <div class="text-center" style="margin-top: 10%">
         <el-button type="success" plain @click="login()">Accedi</el-button>
-        <el-button type="primary" plain @click="register()"
-          >Registrati</el-button
-        >
+        <el-button type="primary" plain @click="register()">
+          Registrati
+        </el-button>
       </div>
     </b-container>
   </div>

@@ -3,13 +3,13 @@
     <navbar />
     <b-container>
       <el-table :data="cits" border style="width: 100%">
-        <el-table-column prop="title" label="Titolo"> </el-table-column>
-        <el-table-column prop="date" label="Data"> </el-table-column
-        ><el-table-column fixed="right" label="" width="120">
+        <el-table-column prop="title" label="Titolo" />
+        <el-table-column prop="date" label="Data" />
+        <el-table-column fixed="right" label="" width="120">
           <template slot-scope="scope">
-            <el-button @click="detail(scope.$index)" type="text" size="small"
-              >Dettagli</el-button
-            >
+            <el-button @click="detail(scope.$index)" type="text" size="small">
+              Dettagli
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -49,9 +49,9 @@ export default {
     },
     detail(index) {
       this.$router.push({
-        path: `/cit-detail/${this.cits[index].id}`
+        path: `/cit-detail/${this.cits[index].id}`,
       });
-    }
+    },
   },
   mounted() {
     this.setCits();

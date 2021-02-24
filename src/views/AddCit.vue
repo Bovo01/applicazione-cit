@@ -5,56 +5,54 @@
       <!-- Titolo -->
       <b-row align-v="center" class="my-2">
         <b-col align="right" align-self="end" :cols="numCols">
-          <b><label class="demonstration">Titolo</label></b></b-col
-        >
+          <b><label class="demonstration">Titolo</label></b>
+        </b-col>
         <b-col align="left">
           <el-input
             placeholder="Inserisci il titolo della cit"
             v-model="title"
-          ></el-input
-        ></b-col>
+          />
+        </b-col>
       </b-row>
       <!-- Descrizione -->
       <b-row align-v="center" class="my-2">
         <b-col align="right" align-self="end" :cols="numCols">
-          <label class="demonstration">Descrizione</label></b-col
-        >
+          <label class="demonstration">Descrizione</label>
+        </b-col>
         <b-col align="left">
           <el-input
             type="textarea"
             placeholder="Inserisci la descrizione della cit"
             v-model="description"
-          ></el-input
-        ></b-col>
+          />
+        </b-col>
       </b-row>
       <!-- Data della cit -->
       <b-row align-v="center" class="my-2">
         <b-col align="right" align-self="end" :cols="numCols">
-          <label class="demonstration">Data della cit</label></b-col
-        >
+          <label class="demonstration">Data della cit</label>
+        </b-col>
         <b-col align="left">
           <el-date-picker
             v-model="date"
             type="date"
             placeholder="Seleziona data"
             format="dd/MM/yyyy"
-          >
-          </el-date-picker
-        ></b-col>
+          />
+        </b-col>
       </b-row>
       <!-- Ora della cit -->
       <b-row align-v="center" class="my-2">
         <b-col align="right" align-self="end" :cols="numCols">
-          <label class="demonstration">Ora della cit</label></b-col
-        >
+          <label class="demonstration">Ora della cit</label>
+        </b-col>
         <b-col align="left" align-self="end">
           <el-time-picker
             arrow-control
             v-model="ora"
             placeholder="Seleziona ora"
             format="HH:mm"
-          >
-          </el-time-picker>
+          />
         </b-col>
       </b-row>
       <!-- Persona/e -->
@@ -76,18 +74,18 @@
               :key="persona.id"
               :label="persona.nome"
               :value="persona.id"
-            >
-            </el-option> </el-select
-        ></b-col>
+            />
+          </el-select>
+        </b-col>
       </b-row>
       <!-- Bottoni footer -->
       <div class="text-center" style="margin-top: 10%">
-        <el-button type="success" plain @click="modifica()" v-if="edit"
-          >Modifica cit</el-button
-        >
-        <el-button type="success" plain @click="add()" v-else
-          >Aggiungi cit</el-button
-        >
+        <el-button type="success" plain @click="modifica()" v-if="edit">
+          Modifica cit
+        </el-button>
+        <el-button type="success" plain @click="add()" v-else>
+          Aggiungi cit
+        </el-button>
       </div>
     </b-container>
   </div>

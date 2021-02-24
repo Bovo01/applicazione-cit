@@ -3,14 +3,13 @@
     <navbar />
     <b-container>
       <el-table :data="persons" border style="width: 100%">
-        <el-table-column prop="nome" label="Nome"> </el-table-column>
-        <el-table-column prop="birth_date" label="Data di nascita">
-        </el-table-column
-        ><el-table-column fixed="right" label="" width="120">
+        <el-table-column prop="nome" label="Nome" />
+        <el-table-column prop="birth_date" label="Data di nascita" />
+        <el-table-column fixed="right" label="" width="120">
           <template slot-scope="scope">
-            <el-button @click="detail(scope.$index)" type="text" size="small"
-              >Dettagli</el-button
-            >
+            <el-button @click="detail(scope.$index)" type="text" size="small">
+              Dettagli
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -47,7 +46,7 @@ export default {
     },
     detail(index) {
       this.$router.push({
-        path: `/person-detail/${this.persons[index].id}`
+        path: `/person-detail/${this.persons[index].id}`,
       });
     },
   },

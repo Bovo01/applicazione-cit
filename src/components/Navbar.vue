@@ -19,12 +19,8 @@
             <i class="fas fa-user"></i>
           </template>
           <b-dropdown-item to="/profile">Profilo</b-dropdown-item>
-          <b-dropdown-item @click="logout()"
-            >Logout</b-dropdown-item
-          > </b-nav-item-dropdown
-        ><!--
-        <b-nav-item @click="logout()">Logout</b-nav-item>
-        <b-nav-item to="/profile"> </b-nav-item>-->
+          <b-dropdown-item @click="logout()"> Logout </b-dropdown-item>
+        </b-nav-item-dropdown>
       </b-navbar-nav>
     </b-collapse>
   </b-navbar>
