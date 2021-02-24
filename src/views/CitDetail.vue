@@ -11,7 +11,7 @@
           </b-col>
           <b-col align="left">
             <label>{{
-              cit.descrizione ? cit.descrizione : "Descrizione non inserita"
+              cit.description ? cit.description : "Descrizione non inserita"
             }}</label>
           </b-col>
         </b-row>
