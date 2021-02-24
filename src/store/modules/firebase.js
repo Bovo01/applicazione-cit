@@ -18,10 +18,10 @@ export default {
      * Il payload contiene:
      * tableName = il nome della tabella in cui bisogna modificare
      * id = l'id dell'oggetto da modificare
-     * item = l'oggetto da modificare
+     * item = l'oggetto contenente le modifiche
      */
     editElement(state, payload) {
-      state.firebaseApp.firestore().collection(payload.tableName).doc(payload.id).set(payload.item);
+      state.firebaseApp.firestore().collection(payload.tableName).doc(payload.id).update(payload.item);
     },
     /**
      * Il payload contiene:

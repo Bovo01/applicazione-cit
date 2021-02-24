@@ -78,7 +78,7 @@ export default {
       this.$store.commit("addElement", {
         tableName: "persone",
         item: {
-          birth_date: this.dateToString(this.birth_date) ?? null,
+          birth_date: this.dateToString(this.birth_date),
           nome: this.nome,
         },
       });
@@ -92,7 +92,7 @@ export default {
       });
     },
     dateToString(date) {
-      if (date === undefined || date === null || date === "") return undefined;
+      if (date === undefined || date === null || date === "") return null;
       return (
         (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) +
         "/" +

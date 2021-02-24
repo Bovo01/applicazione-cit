@@ -10,16 +10,16 @@
         <b-row>
           <router-link to="/cits">Visualizza tutte le cit</router-link></b-row
         >
-        <b-row>
-          <router-link to="/add-cit" v-if="$store.getters.admin"
+        <b-row v-if="$store.getters.admin">
+          <router-link to="/add-cit"
             >Crea una nuova cit</router-link
           ></b-row
         ><b-row>
           <router-link to="/persone"
             >Visualizza le persone che possono dire le cit</router-link
           ></b-row
-        ><b-row>
-          <router-link to="/add-person" v-if="$store.getters.admin"
+        ><b-row v-if="$store.getters.admin">
+          <router-link to="/add-person"
             >Aggiungi una persona</router-link
           ></b-row
         >
