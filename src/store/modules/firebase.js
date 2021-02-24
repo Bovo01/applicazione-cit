@@ -14,6 +14,23 @@ export default {
     addElement(state, payload) {
       state.firebaseApp.firestore().collection(payload.tableName).add(payload.item);
     },
+    /**
+     * Il payload contiene:
+     * tableName = il nome della tabella in cui bisogna modificare
+     * id = l'id dell'oggetto da modificare
+     * item = l'oggetto da modificare
+     */
+    editElement(state, payload) {
+      state.firebaseApp.firestore().collection(payload.tableName).doc(payload.id).set(payload.item);
+    },
+    /**
+     * Il payload contiene:
+     * tableName = il nome della tabella in cui bisogna eliminare
+     * id = l'id dell'oggetto da eliminare
+     */
+    deleteElement(state, payload) {
+      state.firebaseApp.firestore().collection(payload.tableName).doc(payload.id).delete();
+    }
   },
   getters: {
     database: state => state.firebaseApp.firestore(),

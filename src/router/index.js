@@ -1,12 +1,13 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Login from '../views/Login.vue'
-import Register from '../views/Register.vue'
-import Home from '../views/Home.vue'
-import ElencoCit from '../views/ElencoCit.vue'
-import AddCit from '../views/AddCit.vue'
-import ElencoPersone from '../views/ElencoPersone.vue'
-import AddPerson from '../views/AddPerson.vue'
+import Login from '../views/Login'
+import Register from '../views/Register'
+import Home from '../views/Home'
+import ElencoCit from '../views/ElencoCit'
+import AddCit from '../views/AddCit'
+import ElencoPersone from '../views/ElencoPersone'
+import AddPerson from '../views/AddPerson'
+import PersonDetail from '../views/PersonDetail'
 
 Vue.use(VueRouter)
 
@@ -38,12 +39,20 @@ const routes = [{
   path: '/add-person',
   name: 'Add person',
   component: AddPerson
-}]
+}, {
+  path: '/edit-person/:id',
+  name: 'Add person con id',
+  component: AddPerson
+}, {
+  path: '/person-detail/:id',
+  name: 'Person detail',
+  component: PersonDetail
+}];
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
-})
+});
 
-export default router
+export default router;

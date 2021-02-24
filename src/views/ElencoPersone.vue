@@ -7,8 +7,8 @@
         <el-table-column prop="birth_date" label="Data di nascita">
         </el-table-column
         ><el-table-column fixed="right" label="" width="120">
-          <template>
-            <el-button @click="detail()" type="text" size="small"
+          <template slot-scope="scope">
+            <el-button @click="detail(scope.$index)" type="text" size="small"
               >Dettagli</el-button
             >
           </template>
@@ -45,7 +45,11 @@ export default {
           });
         });
     },
-    detail() {},
+    detail(index) {
+      this.$router.push({
+        path: `/person-detail/${this.persons[index].id}`
+      });
+    },
   },
   mounted() {
     this.setPersons();

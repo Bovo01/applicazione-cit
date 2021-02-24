@@ -26,9 +26,12 @@
           </el-date-picker
         ></b-col>
       </b-row>
-
+      <!-- Bottoni footer -->
       <div class="text-center" style="margin-top: 10%">
-        <el-button type="success" plain @click="insert()"
+        <el-button type="success" plain @click="modifica()" v-if="edit"
+          >Modifica persona</el-button
+        >
+        <el-button type="success" plain @click="insert()" v-else
           >Aggiungi persona</el-button
         >
       </div>
@@ -38,6 +41,7 @@
 
 <script>
 import Navbar from "@/components/Navbar";
+import moment from "moment";
 
 export default {
   components: {
@@ -47,9 +51,25 @@ export default {
     return {
       birth_date: "",
       nome: "",
+      edit: false,
     };
   },
   methods: {
+    modifica() {
+      if (this.nome === "") {
+        this.error("Devi inserire il nome");
+        return;
+      }
+      this.$store.commit("editElement", {
+        tableName: "persone",
+        id: this.$route.params.id,
+        item: {
+          birth_date: this.dateToString(this.birth_date) ?? null,
+          nome: this.nome,
+        },
+      });
+      this.$router.push({ name: "Elenco persone" });
+    },
     insert() {
       if (this.nome === "") {
         this.error("Devi inserire il nome");
@@ -72,8 +92,7 @@ export default {
       });
     },
     dateToString(date) {
-      if (date === undefined || date === "")
-        return undefined;
+      if (date === undefined || date === null || date === "") return undefined;
       return (
         (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) +
         "/" +
@@ -83,6 +102,40 @@ export default {
         "/" +
         date.getFullYear()
       );
+    },
+    setPerson() {
+      if (this.$route.params.id !== undefined) {
+        let self = this;
+        this.$store.getters.database
+          .collection("persone")
+          .doc(this.$route.params.id)
+          .get()
+          .then((response) => {
+            if (response.data() === undefined)
+              this.$router.push({ name: "Add person" });
+            self.edit = true;
+            self.nome = response.data().nome;
+            let date = moment(
+              response.data().birth_date,
+              "DD/MM/YYYY"
+            );
+            self.birth_date = date.isValid() ? date.toDate() : "";
+          });
+      }
+    },
+  },
+  mounted() {
+    this.setPerson();
+  },
+  watch: {
+    $route: function (to) {
+      if (to.name === "Add person") {
+        this.edit = false;
+        this.nome = "";
+        this.birth_date = "";
+      } else {
+        this.setPerson();
+      }
     },
   },
 };
