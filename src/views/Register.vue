@@ -95,7 +95,7 @@ export default {
       });
     },
     async isElementInTable(item) {
-      let tmpTable = this.$store.state.database
+      let tmpTable = this.$store.getters.database
         .collection("account")
         .where("user", "==", item.user);
       let returned;
