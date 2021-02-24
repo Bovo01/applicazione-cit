@@ -5,7 +5,7 @@
       <!-- Titolo -->
       <b-row align-v="center" class="my-2">
         <b-col align="right" align-self="end" :cols="numCols">
-          <label class="demonstration">Titolo</label></b-col
+          <b><label class="demonstration">Titolo</label></b></b-col
         >
         <b-col align="left">
           <el-input
@@ -82,7 +82,12 @@
       </b-row>
       <!-- Bottoni footer -->
       <div class="text-center" style="margin-top: 10%">
-        <el-button type="success" plain @click="add()">Aggiungi cit</el-button>
+        <el-button type="success" plain @click="modifica()" v-if="edit"
+          >Modifica cit</el-button
+        >
+        <el-button type="success" plain @click="add()" v-else
+          >Aggiungi cit</el-button
+        >
       </div>
     </b-container>
   </div>
@@ -90,6 +95,7 @@
 
 <script>
 import Navbar from "@/components/Navbar";
+import moment from "moment";
 
 export default {
   components: {
@@ -104,6 +110,7 @@ export default {
       ora: new Date(),
       persons: [],
       selected_persons: [],
+      edit: false,
     };
   },
   methods: {
@@ -114,14 +121,14 @@ export default {
         message,
       });
     },
-    async add() {
+    async verifiche() {
       if (this.title === "") {
         this.error("Devi inserire il titolo");
-        return;
+        return false;
       }
       if (this.selected_persons.length < 1) {
         this.error("Devi inserire almeno una persona");
-        return;
+        return false;
       }
       let newPersone = this.getNewPersone();
       if (newPersone.length > 0) {
@@ -144,10 +151,15 @@ export default {
           this.error(
             "Salvataggio della cit annullato. Inserisci manualmente le persone per aggiungere la cit"
           );
-          return;
+          return false;
         }
       }
+      return true;
+    },
+    async add() {
+      if (!(await this.verifiche())) return;
 
+      let newPersone = this.getNewPersone();
       let persone = this.getPersoneInDb();
       for (let personaDaAggiungere of newPersone) {
         // Inserisco la persona
@@ -167,6 +179,40 @@ export default {
 
       this.$store.commit("addElement", {
         tableName: "cits",
+        item: {
+          title: this.title,
+          description: this.description,
+          date: this.dateToString(this.date),
+          ora: this.oraToString(this.ora),
+          persone,
+        },
+      });
+      this.$router.push({ name: "Elenco cit" });
+    },
+    async modifica() {
+      if (!(await this.verifiche())) return;
+
+      let newPersone = this.getNewPersone();
+      let persone = this.getPersoneInDb();
+      for (let personaDaAggiungere of newPersone) {
+        // Inserisco la persona
+        await this.$store.commit("addElement", {
+          tableName: "persone",
+          item: { nome: personaDaAggiungere, birth_date: null },
+        });
+        // Prendo l'id dalla persona
+        await this.$store.getters.database
+          .collection("persone")
+          .where("nome", "==", personaDaAggiungere)
+          .get()
+          .then((response) => {
+            persone.push(response.docs[0].id);
+          });
+      }
+
+      this.$store.commit("editElement", {
+        tableName: "cits",
+        id: this.$route.params.id,
         item: {
           title: this.title,
           description: this.description,
@@ -240,9 +286,48 @@ export default {
       }
       return newPersone;
     },
+    setCit() {
+      if (this.$route.params.id !== undefined) {
+        let self = this;
+        this.$store.getters.database
+          .collection("cits")
+          .doc(this.$route.params.id)
+          .get()
+          .then((response) => {
+            if (response.data() === undefined) {
+              self.$router.push({ name: "Add cit" });
+              return;
+            }
+            self.edit = true;
+            // Imposto le variabili della view
+            self.title = response.data().title;
+            self.description = response.data().description;
+            let date = moment(response.data().date, "DD/MM/YYYY");
+            self.date = date.isValid() ? date.toDate() : "";
+            let ora = moment(response.data().ora, "HH:mm");
+            self.ora = ora.isValid() ? ora.toDate() : "";
+            self.selected_persons = response.data().persone;
+          });
+      }
+    },
   },
   mounted() {
+    this.setCit();
     this.getShortPersons();
+  },
+  watch: {
+    $route: function (to) {
+      if (to.name === "Add cit") {
+        this.edit = false;
+        this.title = "";
+        this.description = "";
+        this.date = "";
+        this.ora = "";
+        this.selected_persons = [];
+      } else {
+        this.setCit();
+      }
+    },
   },
 };
 </script>

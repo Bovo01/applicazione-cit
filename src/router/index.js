@@ -4,6 +4,7 @@ import Login from '../views/Login'
 import Register from '../views/Register'
 import Home from '../views/Home'
 import ElencoCit from '../views/ElencoCit'
+import CitDetail from '../views/CitDetail'
 import AddCit from '../views/AddCit'
 import ElencoPersone from '../views/ElencoPersone'
 import AddPerson from '../views/AddPerson'
@@ -28,8 +29,16 @@ const routes = [{
   name: 'Elenco cit',
   component: ElencoCit
 }, {
+  path: '/cit-detail/:id',
+  name: 'Cit detail',
+  component: CitDetail
+}, {
   path: '/add-cit',
-  name: 'Aggiungi cit',
+  name: 'Add cit',
+  component: AddCit
+}, {
+  path: '/edit-cit/:id',
+  name: 'Edit cit',
   component: AddCit
 }, {
   path: '/persone',
@@ -41,7 +50,7 @@ const routes = [{
   component: AddPerson
 }, {
   path: '/edit-person/:id',
-  name: 'Add person con id',
+  name: 'Edit person',
   component: AddPerson
 }, {
   path: '/person-detail/:id',

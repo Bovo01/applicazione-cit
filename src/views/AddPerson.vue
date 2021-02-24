@@ -111,14 +111,14 @@ export default {
           .doc(this.$route.params.id)
           .get()
           .then((response) => {
-            if (response.data() === undefined)
-              this.$router.push({ name: "Add person" });
+            if (response.data() === undefined) {
+              self.$router.push({ name: "Add person" });
+              return;
+            }
             self.edit = true;
+            // Imposto le variabili della view
             self.nome = response.data().nome;
-            let date = moment(
-              response.data().birth_date,
-              "DD/MM/YYYY"
-            );
+            let date = moment(response.data().birth_date, "DD/MM/YYYY");
             self.birth_date = date.isValid() ? date.toDate() : "";
           });
       }

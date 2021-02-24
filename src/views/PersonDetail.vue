@@ -19,7 +19,7 @@
         </b-row>
       </div>
       <!-- Bottoni footer -->
-      <div class="text-center" style="margin-top: 10%" v-if="admin">
+      <div class="text-center" style="margin-top: 10%" v-if="this.$store.getters.admin">
         <el-button type="warning" plain @click="edit()">Modifica</el-button>
         <el-button type="danger" plain @click="elimina()">Elimina</el-button>
       </div>
@@ -62,11 +62,6 @@ export default {
           this.$router.push({ name: "Elenco persone" });
         self.person = response.data();
       });
-  },
-  computed: {
-    admin: function () {
-      return this.$store.getters.admin;
-    },
   },
 };
 </script>
