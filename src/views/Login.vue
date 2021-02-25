@@ -71,6 +71,13 @@ export default {
           isAdmin(self.user, encryptedPass, self).then((newResponse) => {
             self.$store.commit("setAdmin", newResponse);
           });
+          this.$store.getters.database
+            .collection("account")
+            .where("user", "==", this.user)
+            .get()
+            .then((newResponse) => {
+              self.$store.commit("setUserId", newResponse.docs[0].id);
+            });
           self.$router.push({
             name: "Home",
           });
