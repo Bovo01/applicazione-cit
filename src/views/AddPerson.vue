@@ -4,7 +4,7 @@
     <b-container>
       <!-- Nome -->
       <b-row align-v="center" class="my-2">
-        <b-col align="right" align-self="end">
+        <b-col align="right" align-self="end" :cols="numCols">
           <label class="demonstration">Nome</label>
         </b-col>
         <b-col align="left">
@@ -13,7 +13,7 @@
       </b-row>
       <!-- Data di nascita -->
       <b-row align-v="center" class="my-2">
-        <b-col align="right" align-self="end">
+        <b-col align="right" align-self="end" :cols="numCols">
           <label class="demonstration">Data di nascita</label>
         </b-col>
         <b-col align="left">
@@ -51,6 +51,7 @@ export default {
       birth_date: "",
       nome: "",
       edit: false,
+      numCols: 4,
     };
   },
   methods: {

@@ -9,6 +9,7 @@ import AddCit from '../views/AddCit'
 import ElencoPersone from '../views/ElencoPersone'
 import AddPerson from '../views/AddPerson'
 import PersonDetail from '../views/PersonDetail'
+import Profile from '../views/Profile'
 
 Vue.use(VueRouter)
 
@@ -56,6 +57,10 @@ const routes = [{
   path: '/person-detail/:id',
   name: 'Person detail',
   component: PersonDetail
+}, {
+  path: '/profile',
+  name: 'Profile',
+  component: Profile
 }];
 
 const router = new VueRouter({
