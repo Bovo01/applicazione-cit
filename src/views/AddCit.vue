@@ -420,6 +420,10 @@ export default {
     },
   },
   mounted() {
+    // Metodo di sicurezza contro i non admin
+    if (!this.$store.getters.admin) {
+      this.$router.push({ name: "Elenco cit" });
+    }
     this.setCit();
     this.getShortLuoghi();
     this.getShortPersons();

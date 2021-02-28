@@ -125,6 +125,10 @@ export default {
     },
   },
   mounted() {
+    // Metodo di sicurezza contro i non admin
+    if (!this.$store.getters.admin) {
+      this.$router.push({ name: "Elenco persone" });
+    }
     this.setPerson();
   },
   watch: {
