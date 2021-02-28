@@ -21,6 +21,12 @@
         <b-row v-if="$store.getters.admin">
           <router-link to="/add-person">Aggiungi una persona</router-link>
         </b-row>
+        <b-row>
+          <router-link to="/luoghi">Visualizza i luoghi</router-link>
+        </b-row>
+        <b-row v-if="$store.getters.admin">
+          <router-link to="/add-luogo">Aggiungi un luogo</router-link>
+        </b-row>
       </div>
     </b-container>
   </div>
