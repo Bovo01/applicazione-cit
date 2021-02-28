@@ -7,8 +7,11 @@ import ElencoCit from '../views/ElencoCit'
 import CitDetail from '../views/CitDetail'
 import AddCit from '../views/AddCit'
 import ElencoPersone from '../views/ElencoPersone'
-import AddPerson from '../views/AddPerson'
 import PersonDetail from '../views/PersonDetail'
+import AddPerson from '../views/AddPerson'
+import ElencoLuoghi from '../views/ElencoLuoghi'
+import LuogoDetail from '../views/LuogoDetail'
+import AddLuogo from '../views/AddLuogo'
 import Profile from '../views/Profile'
 
 Vue.use(VueRouter)
@@ -57,6 +60,22 @@ const routes = [{
   path: '/person-detail/:id',
   name: 'Person detail',
   component: PersonDetail
+}, {
+  path: '/luoghi',
+  name: 'Elenco luoghi',
+  component: ElencoLuoghi
+}, {
+  path: '/luogo-detail/:id',
+  name: 'Luogo detail',
+  component: LuogoDetail
+}, {
+  path: '/add-luogo',
+  name: 'Add luogo',
+  component: AddLuogo
+}, {
+  path: '/edit-luogo/:id',
+  name: 'Edit luogo',
+  component: AddLuogo
 }, {
   path: '/profile',
   name: 'Profile',
