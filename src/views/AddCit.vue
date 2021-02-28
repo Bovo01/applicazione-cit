@@ -99,7 +99,7 @@
             />
           </el-select>
         </b-col>
-        <b-col align="left">
+        <b-col align="left" v-show="selected_luogo !== '' && selected_luogo !== null && selected_luogo !== undefined">
           <el-button type="warning" plain @click="selected_luogo = ''">Deseleziona luogo</el-button>
         </b-col>
       </b-row>
