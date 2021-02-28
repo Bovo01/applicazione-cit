@@ -48,6 +48,15 @@
             </ul>
           </b-col>
         </b-row>
+        <!-- Luogo -->
+        <b-row align-v="center" class="my-2">
+          <b-col align="right" align-self="start">
+            <label>Luogo:</label>
+          </b-col>
+          <b-col align="left">
+            <label>{{ cit.luogo || "Luogo non inserito" }}</label>
+          </b-col>
+        </b-row>
       </div>
       <!-- Bottoni footer -->
       <div
@@ -95,6 +104,7 @@ export default {
           if (response.data() === undefined)
             self.$router.push({ name: "Elenco cit" });
           self.cit = response.data();
+          // Imposto le persone (converto gli id in nomi)
           let newPersone = [];
           for (let persona of self.cit.persone) {
             self.$store.getters.database
@@ -106,6 +116,16 @@ export default {
               });
           }
           self.cit.persone = newPersone;
+          // Imposto il luogo (converto l'id in nome)
+          if (self.cit.luogo) {
+            self.$store.getters.database
+              .collection("luoghi")
+              .doc(self.cit.luogo)
+              .get()
+              .then((risposta) => {
+                self.cit.luogo = risposta.data().nome;
+              });
+          }
         });
     },
   },

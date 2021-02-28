@@ -56,7 +56,7 @@
         </b-col>
       </b-row>
       <!-- Persona/e -->
-      <b-row>
+      <b-row align-v="center" class="my-2">
         <b-col align="right" align-self="end" :cols="numCols">
           <label class="demonstration">Persona/e</label>
         </b-col>
@@ -76,6 +76,31 @@
               :value="persona.id"
             />
           </el-select>
+        </b-col>
+      </b-row>
+      <!-- Luogo -->
+      <b-row align-v="center" class="my-2">
+        <b-col align="right" align-self="end" :cols="numCols">
+          <label class="demonstration">Luogo</label>
+        </b-col>
+        <b-col>
+          <el-select
+            v-model="selected_luogo"
+            filterable
+            allow-create
+            default-first-option
+            placeholder="Inserisci il luogo"
+          >
+            <el-option
+              v-for="luogo in luoghi"
+              :key="luogo.id"
+              :label="luogo.nome"
+              :value="luogo.id"
+            />
+          </el-select>
+        </b-col>
+        <b-col align="left">
+          <el-button type="warning" plain @click="selected_luogo = ''">Deseleziona luogo</el-button>
         </b-col>
       </b-row>
       <!-- Bottoni footer -->
@@ -108,6 +133,8 @@ export default {
       ora: new Date(),
       persons: [],
       selected_persons: [],
+      luoghi: [],
+      selected_luogo: "",
       edit: false,
     };
   },
@@ -120,14 +147,17 @@ export default {
       });
     },
     async verifiche() {
+      // Controllo il titolo
       if (this.title === "") {
         this.error("Devi inserire il titolo");
         return false;
       }
+      // Controllo che ci sia almeno una persona
       if (this.selected_persons.length < 1) {
         this.error("Devi inserire almeno una persona");
         return false;
       }
+      // Controllo le persone non inserite nel db
       let newPersone = this.getNewPersone();
       if (newPersone.length > 0) {
         let stop;
@@ -152,11 +182,37 @@ export default {
           return false;
         }
       }
+      // Controllo se il luogo è già stato inserito nel db
+      if (this.isNewLuogo(this.selected_luogo)) {
+        let stop;
+        await this.$confirm(
+          "Hai inserito un luogo non presente nel database. Vuoi continuare con la creazione automatica del luogo?",
+          "Vuoi creare automaticamente il luogo inserito?",
+          {
+            confirmButtonText: "OK",
+            cancelButtonText: "Cancel",
+          }
+        )
+          .then(() => {
+            stop = false;
+          })
+          .catch(() => {
+            stop = true;
+          });
+        if (stop) {
+          this.error(
+            "Salvataggio della cit annullato. Inserisci manualmente il luogo per aggiungere la cit"
+          );
+          return false;
+        }
+      }
+      // Ultimo return statement
       return true;
     },
     async add() {
       if (!(await this.verifiche())) return;
 
+      // Creo le persone mancanti
       let newPersone = this.getNewPersone();
       let persone = this.getPersoneInDb();
       for (let personaDaAggiungere of newPersone) {
@@ -174,6 +230,23 @@ export default {
             persone.push(response.docs[0].id);
           });
       }
+      // Creo il luogo mancante
+      let newLuogo = this.selected_luogo || null;
+      if (this.isNewLuogo(newLuogo)) {
+        // Inserisco il luogo
+        await this.$store.commit("addElement", {
+          tableName: "luoghi",
+          item: { nome: newLuogo },
+        });
+        // Prendo l'id dalla persona
+        await this.$store.getters.database
+          .collection("luoghi")
+          .where("nome", "==", newLuogo)
+          .get()
+          .then((response) => {
+            newLuogo = response.docs[0].id;
+          });
+      }
 
       this.$store.commit("addElement", {
         tableName: "cits",
@@ -183,6 +256,7 @@ export default {
           date: this.dateToString(this.date),
           ora: this.oraToString(this.ora),
           persone,
+          luogo: newLuogo,
         },
       });
       this.$router.push({ name: "Elenco cit" });
@@ -190,6 +264,7 @@ export default {
     async modifica() {
       if (!(await this.verifiche())) return;
 
+      // Creo le persone mancanti
       let newPersone = this.getNewPersone();
       let persone = this.getPersoneInDb();
       for (let personaDaAggiungere of newPersone) {
@@ -205,6 +280,23 @@ export default {
           .get()
           .then((response) => {
             persone.push(response.docs[0].id);
+          });
+      }
+      // Creo il luogo mancante
+      let newLuogo = this.selected_luogo || null;
+      if (this.isNewLuogo(newLuogo)) {
+        // Inserisco il luogo
+        await this.$store.commit("addElement", {
+          tableName: "luoghi",
+          item: { nome: newLuogo },
+        });
+        // Prendo l'id dalla persona
+        await this.$store.getters.database
+          .collection("luoghi")
+          .where("nome", "==", newLuogo)
+          .get()
+          .then((response) => {
+            newLuogo = response.docs[0].id;
           });
       }
 
@@ -217,6 +309,7 @@ export default {
           date: this.dateToString(this.date),
           ora: this.oraToString(this.ora),
           persone,
+          luogo: newLuogo,
         },
       });
       this.$router.push({ name: "Elenco cit" });
@@ -249,10 +342,19 @@ export default {
         .then((response) => {
           self.persons = [];
           response.docs.forEach((persona) => {
-            let newPersona = {};
-            newPersona.id = persona.id;
-            newPersona.nome = persona.data().nome;
-            self.persons.push(newPersona);
+            self.persons.push({ id: persona.id, nome: persona.data().nome });
+          });
+        });
+    },
+    getShortLuoghi() {
+      let self = this;
+      this.$store.getters.database
+        .collection("luoghi")
+        .get()
+        .then((response) => {
+          self.luoghi = [];
+          response.docs.forEach((luogo) => {
+            self.luoghi.push({ id: luogo.id, nome: luogo.data().nome });
           });
         });
     },
@@ -284,6 +386,13 @@ export default {
       }
       return newPersone;
     },
+    isNewLuogo(luogo) {
+      if (luogo === undefined || luogo === null || luogo == "") return false;
+      for (let l of this.luoghi) {
+        if (luogo === l.id) return false;
+      }
+      return true;
+    },
     setCit() {
       if (this.$route.params.id !== undefined) {
         let self = this;
@@ -305,12 +414,14 @@ export default {
             let ora = moment(response.data().ora, "HH:mm");
             self.ora = ora.isValid() ? ora.toDate() : "";
             self.selected_persons = response.data().persone;
+            self.selected_luogo = response.data().luogo;
           });
       }
     },
   },
   mounted() {
     this.setCit();
+    this.getShortLuoghi();
     this.getShortPersons();
   },
   watch: {
