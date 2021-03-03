@@ -48,6 +48,20 @@
             </ul>
           </b-col>
         </b-row>
+        <!-- Spettatori -->
+        <b-row align-v="center" class="my-2">
+          <b-col align="right" align-self="start">
+            <label>Persone presenti durante la cit:</label>
+          </b-col>
+          <b-col align="left">
+            <ul v-if="cit.spettatori && cit.spettatori.length > 0">
+              <li v-for="spettatore in cit.spettatori" :key="spettatore">
+                {{ spettatore }}
+              </li>
+            </ul>
+            <label v-else>Non erano presenti persone durante questa cit</label>
+          </b-col>
+        </b-row>
         <!-- Luogo -->
         <b-row align-v="center" class="my-2">
           <b-col align="right" align-self="start">
@@ -116,6 +130,18 @@ export default {
               });
           }
           self.cit.persone = newPersone;
+          // Imposto gli spettatori (converto gli id in nomi)
+          let newSpettatori = [];
+          for (let persona of self.cit.spettatori) {
+            self.$store.getters.database
+              .collection("persone")
+              .doc(persona)
+              .get()
+              .then((risposta) => {
+                newSpettatori.push(risposta.data().nome);
+              });
+          }
+          self.cit.spettatori = newSpettatori;
           // Imposto il luogo (converto l'id in nome)
           if (self.cit.luogo) {
             self.$store.getters.database
