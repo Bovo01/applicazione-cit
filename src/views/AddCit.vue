@@ -78,6 +78,29 @@
           </el-select>
         </b-col>
       </b-row>
+      <!-- Persone presenti -->
+      <b-row align-v="center" class="my-2">
+        <b-col align="right" align-self="end" :cols="numCols">
+          <label class="demonstration">Persone presenti</label>
+        </b-col>
+        <b-col>
+          <el-select
+            v-model="selected_spectators"
+            multiple
+            filterable
+            allow-create
+            default-first-option
+            placeholder="Seleziona le persone che erano presenti al momento della cit"
+          >
+            <el-option
+              v-for="persona in persons"
+              :key="persona.id"
+              :label="persona.nome"
+              :value="persona.id"
+            />
+          </el-select>
+        </b-col>
+      </b-row>
       <!-- Luogo -->
       <b-row align-v="center" class="my-2">
         <b-col align="right" align-self="end" :cols="numCols">
@@ -99,8 +122,17 @@
             />
           </el-select>
         </b-col>
-        <b-col align="left" v-show="selected_luogo !== '' && selected_luogo !== null && selected_luogo !== undefined">
-          <el-button type="warning" plain @click="selected_luogo = ''">Deseleziona luogo</el-button>
+        <b-col
+          align="left"
+          v-show="
+            selected_luogo !== '' &&
+            selected_luogo !== null &&
+            selected_luogo !== undefined
+          "
+        >
+          <el-button type="warning" plain @click="selected_luogo = ''"
+            >Deseleziona luogo</el-button
+          >
         </b-col>
       </b-row>
       <!-- Bottoni footer -->
@@ -133,6 +165,7 @@ export default {
       ora: new Date(),
       persons: [],
       selected_persons: [],
+      selected_spectators: [],
       luoghi: [],
       selected_luogo: "",
       edit: false,
@@ -158,8 +191,36 @@ export default {
         return false;
       }
       // Controllo le persone non inserite nel db
-      let newPersone = this.getNewPersone();
-      if (newPersone.length > 0) {
+      let controllatePersone = false;
+      if (this.getNewPersone(this.selected_persons).length > 0) {
+        controllatePersone = true;
+        let stop;
+        await this.$confirm(
+          "Hai inserito delle persone non presenti nel database. Vuoi continuare con la creazione automatica dei profili?",
+          "Vuoi creare automaticamente le persone mancanti?",
+          {
+            confirmButtonText: "OK",
+            cancelButtonText: "Cancel",
+          }
+        )
+          .then(() => {
+            stop = false;
+          })
+          .catch(() => {
+            stop = true;
+          });
+        if (stop) {
+          this.error(
+            "Salvataggio della cit annullato. Inserisci manualmente le persone per aggiungere la cit"
+          );
+          return false;
+        }
+      }
+      // Controllo le persone (spettatori) non inserite nel db
+      if (
+        this.getNewPersone(this.selected_spectators).length > 0 &&
+        !controllatePersone
+      ) {
         let stop;
         await this.$confirm(
           "Hai inserito delle persone non presenti nel database. Vuoi continuare con la creazione automatica dei profili?",
@@ -213,8 +274,8 @@ export default {
       if (!(await this.verifiche())) return;
 
       // Creo le persone mancanti
-      let newPersone = this.getNewPersone();
-      let persone = this.getPersoneInDb();
+      let newPersone = this.getNewPersone(this.selected_persons);
+      let persone = this.getPersoneInDb(this.selected_persons);
       for (let personaDaAggiungere of newPersone) {
         // Inserisco la persona
         await this.$store.commit("addElement", {
@@ -228,6 +289,32 @@ export default {
           .get()
           .then((response) => {
             persone.push(response.docs[0].id);
+          });
+      }
+      // Creo gli spettatori mancanti
+      let newSpettatori = this.getNewPersone(this.selected_spectators);
+      let spettatori = this.getPersoneInDb(this.selected_spectators);
+      for (let personaDaAggiungere of newSpettatori) {
+        // Controllo se la persona è già presente
+        if (
+          !(await this.$store.getters.database
+            .collection("persone")
+            .where("nome", "==", personaDaAggiungere)
+            .get()
+            .then((response) => response.docs.length > 0))
+        )
+          // Inserisco la persona
+          await this.$store.commit("addElement", {
+            tableName: "persone",
+            item: { nome: personaDaAggiungere, birth_date: null },
+          });
+        // Prendo l'id dalla persona
+        await this.$store.getters.database
+          .collection("persone")
+          .where("nome", "==", personaDaAggiungere)
+          .get()
+          .then((response) => {
+            spettatori.push(response.docs[0].id);
           });
       }
       // Creo il luogo mancante
@@ -256,6 +343,7 @@ export default {
           date: this.dateToString(this.date),
           ora: this.oraToString(this.ora),
           persone,
+          spettatori,
           luogo: newLuogo,
         },
       });
@@ -265,8 +353,8 @@ export default {
       if (!(await this.verifiche())) return;
 
       // Creo le persone mancanti
-      let newPersone = this.getNewPersone();
-      let persone = this.getPersoneInDb();
+      let newPersone = this.getNewPersone(this.selected_persons);
+      let persone = this.getPersoneInDb(this.selected_persons);
       for (let personaDaAggiungere of newPersone) {
         // Inserisco la persona
         await this.$store.commit("addElement", {
@@ -280,6 +368,32 @@ export default {
           .get()
           .then((response) => {
             persone.push(response.docs[0].id);
+          });
+      }
+      // Creo gli spettatori mancanti
+      let newSpettatori = this.getNewPersone(this.selected_spectators);
+      let spettatori = this.getPersoneInDb(this.selected_spectators);
+      for (let personaDaAggiungere of newSpettatori) {
+        // Controllo se la persona è già presente
+        if (
+          !(await this.$store.getters.database
+            .collection("persone")
+            .where("nome", "==", personaDaAggiungere)
+            .get()
+            .then((response) => response.docs.length > 0))
+        )
+          // Inserisco la persona
+          await this.$store.commit("addElement", {
+            tableName: "persone",
+            item: { nome: personaDaAggiungere, birth_date: null },
+          });
+        // Prendo l'id dalla persona
+        await this.$store.getters.database
+          .collection("persone")
+          .where("nome", "==", personaDaAggiungere)
+          .get()
+          .then((response) => {
+            spettatori.push(response.docs[0].id);
           });
       }
       // Creo il luogo mancante
@@ -309,6 +423,7 @@ export default {
           date: this.dateToString(this.date),
           ora: this.oraToString(this.ora),
           persone,
+          spettatori,
           luogo: newLuogo,
         },
       });
@@ -358,9 +473,9 @@ export default {
           });
         });
     },
-    getNewPersone() {
+    getNewPersone(selected_persons) {
       let newPersone = [];
-      for (let persona of this.selected_persons) {
+      for (let persona of selected_persons) {
         let present = false;
         for (let other of this.persons) {
           if (persona === other.id) {
@@ -372,9 +487,9 @@ export default {
       }
       return newPersone;
     },
-    getPersoneInDb() {
+    getPersoneInDb(selected_persons) {
       let newPersone = [];
-      for (let persona of this.selected_persons) {
+      for (let persona of selected_persons) {
         let present = false;
         for (let other of this.persons) {
           if (persona === other.id) {
@@ -414,6 +529,7 @@ export default {
             let ora = moment(response.data().ora, "HH:mm");
             self.ora = ora.isValid() ? ora.toDate() : "";
             self.selected_persons = response.data().persone;
+            self.selected_spectators = response.data().spettatori;
             self.selected_luogo = response.data().luogo;
           });
       }
