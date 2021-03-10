@@ -11,6 +11,7 @@
         <b-nav-item to="/add-person" v-if="admin">Aggiungi persona</b-nav-item>
         <b-nav-item to="/luoghi">Elenco luoghi</b-nav-item>
         <b-nav-item to="/add-luogo" v-if="admin">Aggiungi luogo</b-nav-item>
+        <b-nav-item to="/backups" v-if="admin">Backups</b-nav-item>
       </b-navbar-nav>
 
       <!-- Right aligned nav items -->

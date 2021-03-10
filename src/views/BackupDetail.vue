@@ -78,7 +78,9 @@
         style="margin-top: 10%"
         v-if="this.$store.getters.admin"
       >
-        <el-button type="warning" plain @click="edit()">Modifica</el-button>
+        <el-button type="success" plain @click="ripristina()"
+          >Ripristina</el-button
+        >
         <el-button type="danger" plain @click="elimina()">Elimina</el-button>
       </div>
     </b-container>
@@ -98,32 +100,54 @@ export default {
     };
   },
   methods: {
-    edit() {
-      this.$router.push({ path: `/edit-cit/${this.$route.params.id}` });
+    async ripristina() {
+      await this.$store.dispatch("copyElement", {
+        fromTable: "backup-cit",
+        toTable: "cits",
+        id: this.$route.params.id,
+      });
+      this.$store.dispatch("deleteElement", {
+        tableName: "backup-cit",
+        id: this.$route.params.id,
+      });
+      this.$router.push({ name: "Backups" });
     },
     async elimina() {
+      if (
+        !(await this.$confirm(
+          "Se eliminerai questa cit non potrai più recuperarla. Sei sicuro di voler procedere?",
+          "Attenzione",
+          {
+            confirmButtonText: "OK",
+            cancelButtonText: "Cancel",
+            type: "warning",
+          }
+        )
+          .then(() => true)
+          .catch(() => false))
+      ) {
+        this.$notify.error({
+          title: "Eliminazione annullata",
+          message: "Hai annullato l'eliminazione definitiva della cit",
+        });
+        return;
+      }
       // Creo un backup dell'elemento
-      await this.$store.dispatch("copyElement", {
-        fromTable: "cits",
-        toTable: "backup-cit",
-        id: this.$route.params.id,
-      });
-      // Elimino l'elemento
       this.$store.dispatch("deleteElement", {
-        tableName: "cits",
+        tableName: "backup-cit",
         id: this.$route.params.id,
       });
-      this.$router.push({ name: "Elenco cit" });
+      this.$router.push({ name: "Backups" });
     },
     setCit() {
       let self = this;
       this.$store.getters.database
-        .collection("cits")
+        .collection("backup-cit")
         .doc(this.$route.params.id)
         .get()
         .then((response) => {
           if (response.data() === undefined)
-            self.$router.push({ name: "Elenco cit" });
+            self.$router.push({ name: "Backups" });
           self.cit = response.data();
           // Imposto le persone (converto gli id in nomi)
           let newPersone = [];

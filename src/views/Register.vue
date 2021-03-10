@@ -81,7 +81,7 @@ export default {
         if (response) {
           self.error("Il nome utente inserito non è disponibile");
         } else {
-          self.$store.commit("addElement", { tableName: "account", item });
+          self.$store.dispatch("addElement", { tableName: "account", item });
           self.$router.push({
             name: "Login",
             params: {

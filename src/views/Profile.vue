@@ -148,7 +148,7 @@ export default {
       }
 
       this.state = 0;
-      this.$store.commit("editElement", {
+      this.$store.dispatch("editElement", {
         tableName: "account",
         id: this.$store.getters.userId,
         item: { user: this.user },
@@ -185,7 +185,7 @@ export default {
 
       this.state = 0;
       let encryptedPass = CryptoJS.MD5(this.pass1).toString();
-      this.$store.commit("editElement", {
+      this.$store.dispatch("editElement", {
         tableName: "account",
         id: this.$store.getters.userId,
         item: { pass: encryptedPass },

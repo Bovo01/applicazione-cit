@@ -5,14 +5,38 @@ export default {
   mutations: {
     setApp(state, firebaseApp) {
       state.firebaseApp = firebaseApp;
+    }
+  },
+  actions: {
+    /**
+     * Il payload contiene:
+     * fromTable = tabella dalla quale faccio il backup
+     * toTable = tabella in cui salvo il backup
+     * id = l'id dell'elemento da copiare
+     */
+    async copyElement({
+      getters
+    }, payload) {
+      let response = await getters.database
+        .collection(payload.fromTable)
+        .doc(payload.id)
+        .get();
+      await getters.database
+        .collection(payload.toTable)
+        .add(response.data());
     },
     /**
      * Il payload contiene:
-     * tableName = il nome della tabella in cui bisogna aggiungere
-     * item = l'oggetto da aggiungere
+     * tableName = il nome della tabella in cui bisogna eliminare
+     * id = l'id dell'oggetto da eliminare
      */
-    addElement(state, payload) {
-      state.firebaseApp.firestore().collection(payload.tableName).add(payload.item);
+    async deleteElement({
+      getters
+    }, payload) {
+      getters.database
+        .collection(payload.tableName)
+        .doc(payload.id)
+        .delete();
     },
     /**
      * Il payload contiene:
@@ -20,16 +44,25 @@ export default {
      * id = l'id dell'oggetto da modificare
      * item = l'oggetto contenente le modifiche
      */
-    editElement(state, payload) {
-      state.firebaseApp.firestore().collection(payload.tableName).doc(payload.id).update(payload.item);
+    async editElement({
+      getters
+    }, payload) {
+      getters.database
+        .collection(payload.tableName)
+        .doc(payload.id)
+        .update(payload.item);
     },
     /**
      * Il payload contiene:
-     * tableName = il nome della tabella in cui bisogna eliminare
-     * id = l'id dell'oggetto da eliminare
+     * tableName = il nome della tabella in cui bisogna aggiungere
+     * item = l'oggetto da aggiungere
      */
-    deleteElement(state, payload) {
-      state.firebaseApp.firestore().collection(payload.tableName).doc(payload.id).delete();
+    async addElement({
+      getters
+    }, payload) {
+      getters.database
+        .collection(payload.tableName)
+        .add(payload.item);
     }
   },
   getters: {

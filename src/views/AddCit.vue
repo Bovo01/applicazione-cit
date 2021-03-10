@@ -278,7 +278,7 @@ export default {
       let persone = this.getPersoneInDb(this.selected_persons);
       for (let personaDaAggiungere of newPersone) {
         // Inserisco la persona
-        await this.$store.commit("addElement", {
+        await this.$store.dispatch("addElement", {
           tableName: "persone",
           item: { nome: personaDaAggiungere, birth_date: null },
         });
@@ -304,7 +304,7 @@ export default {
             .then((response) => response.docs.length > 0))
         )
           // Inserisco la persona
-          await this.$store.commit("addElement", {
+          await this.$store.dispatch("addElement", {
             tableName: "persone",
             item: { nome: personaDaAggiungere, birth_date: null },
           });
@@ -321,7 +321,7 @@ export default {
       let newLuogo = this.selected_luogo || null;
       if (this.isNewLuogo(newLuogo)) {
         // Inserisco il luogo
-        await this.$store.commit("addElement", {
+        await this.$store.dispatch("addElement", {
           tableName: "luoghi",
           item: { nome: newLuogo },
         });
@@ -335,7 +335,7 @@ export default {
           });
       }
 
-      this.$store.commit("addElement", {
+      this.$store.dispatch("addElement", {
         tableName: "cits",
         item: {
           title: this.title,
@@ -357,7 +357,7 @@ export default {
       let persone = this.getPersoneInDb(this.selected_persons);
       for (let personaDaAggiungere of newPersone) {
         // Inserisco la persona
-        await this.$store.commit("addElement", {
+        await this.$store.dispatch("addElement", {
           tableName: "persone",
           item: { nome: personaDaAggiungere, birth_date: null },
         });
@@ -383,7 +383,7 @@ export default {
             .then((response) => response.docs.length > 0))
         )
           // Inserisco la persona
-          await this.$store.commit("addElement", {
+          await this.$store.dispatch("addElement", {
             tableName: "persone",
             item: { nome: personaDaAggiungere, birth_date: null },
           });
@@ -400,7 +400,7 @@ export default {
       let newLuogo = this.selected_luogo || null;
       if (this.isNewLuogo(newLuogo)) {
         // Inserisco il luogo
-        await this.$store.commit("addElement", {
+        await this.$store.dispatch("addElement", {
           tableName: "luoghi",
           item: { nome: newLuogo },
         });
@@ -414,7 +414,7 @@ export default {
           });
       }
 
-      this.$store.commit("editElement", {
+      this.$store.dispatch("editElement", {
         tableName: "cits",
         id: this.$route.params.id,
         item: {

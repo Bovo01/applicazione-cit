@@ -27,6 +27,9 @@
         <b-row v-if="$store.getters.admin">
           <router-link to="/add-luogo">Aggiungi un luogo</router-link>
         </b-row>
+        <b-row v-if="$store.getters.admin">
+          <router-link to="/backups">Visualizza/Ripristina backups</router-link>
+        </b-row>
       </div>
     </b-container>
   </div>

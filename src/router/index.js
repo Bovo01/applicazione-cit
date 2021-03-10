@@ -12,6 +12,8 @@ import AddPerson from '../views/AddPerson'
 import ElencoLuoghi from '../views/ElencoLuoghi'
 import LuogoDetail from '../views/LuogoDetail'
 import AddLuogo from '../views/AddLuogo'
+import Backups from '../views/Backups'
+import BackupDetail from '../views/BackupDetail'
 import Profile from '../views/Profile'
 
 Vue.use(VueRouter)
@@ -76,6 +78,14 @@ const routes = [{
   path: '/edit-luogo/:id',
   name: 'Edit luogo',
   component: AddLuogo
+}, {
+  path: '/backups',
+  name: 'Backups',
+  component: Backups
+}, {
+  path: '/backup-detail/:id',
+  name: 'Backup detail',
+  component: BackupDetail
 }, {
   path: '/profile',
   name: 'Profile',

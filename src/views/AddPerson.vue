@@ -60,7 +60,7 @@ export default {
         this.error("Devi inserire il nome");
         return;
       }
-      this.$store.commit("editElement", {
+      this.$store.dispatch("editElement", {
         tableName: "persone",
         id: this.$route.params.id,
         item: {
@@ -75,7 +75,7 @@ export default {
         this.error("Devi inserire il nome");
         return;
       }
-      this.$store.commit("addElement", {
+      this.$store.dispatch("addElement", {
         tableName: "persone",
         item: {
           birth_date: this.dateToString(this.birth_date),

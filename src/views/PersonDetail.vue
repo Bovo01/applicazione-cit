@@ -48,7 +48,7 @@ export default {
       this.$router.push({ path: `/edit-person/${this.$route.params.id}` });
     },
     elimina() {
-      this.$store.commit("deleteElement", {
+      this.$store.dispatch("deleteElement", {
         tableName: "persone",
         id: this.$route.params.id,
       });

@@ -42,7 +42,7 @@ export default {
         this.error("Devi inserire il nome del luogo");
         return;
       }
-      this.$store.commit("editElement", {
+      this.$store.dispatch("editElement", {
         tableName: "luoghi",
         id: this.$route.params.id,
         item: {
@@ -56,7 +56,7 @@ export default {
         this.error("Devi inserire il nome del luogo");
         return;
       }
-      this.$store.commit("addElement", {
+      this.$store.dispatch("addElement", {
         tableName: "luoghi",
         item: {
           nome: this.nome,
