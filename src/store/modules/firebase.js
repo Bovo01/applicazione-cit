@@ -21,7 +21,7 @@ export default {
         .collection(payload.fromTable)
         .doc(payload.id)
         .get();
-      await getters.database
+      getters.database
         .collection(payload.toTable)
         .add(response.data());
     },
