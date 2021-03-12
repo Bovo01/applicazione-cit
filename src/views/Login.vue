@@ -56,10 +56,12 @@ export default {
       this.$store.dispatch("startLoading");
       if (this.user === "") {
         this.error("Devi inserire lo username");
+        this.$store.dispatch("stopLoading");
         return;
       }
       if (this.pass === "") {
         this.error("Devi inserire la password");
+        this.$store.dispatch("stopLoading");
         return;
       }
 

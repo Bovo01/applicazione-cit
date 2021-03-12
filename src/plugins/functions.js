@@ -47,7 +47,6 @@ export async function getViewPermissions(username, password, self) {
     .where('pass', '==', password)
     .get()
     .then((snapshot) => {
-      console.log(snapshot.docs[0].data())
       if (snapshot.docs.length == 1)
         if (snapshot.docs[0].data().viewPermission)
           returned = true;

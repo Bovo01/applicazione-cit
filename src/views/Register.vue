@@ -60,18 +60,22 @@ export default {
       this.$store.dispatch("startLoading");
       if (this.username === "") {
         this.error("Devi inserire lo username");
+        this.$store.dispatch("stopLoading");
         return;
       }
       if (this.pass1 === "") {
         this.error("Devi inserire la password");
+        this.$store.dispatch("stopLoading");
         return;
       }
       if (this.pass2 === "") {
         this.error("Devi ripetere la password");
+        this.$store.dispatch("stopLoading");
         return;
       }
       if (this.pass1 !== this.pass2) {
         this.error("Le password non coincidono");
+        this.$store.dispatch("stopLoading");
         return;
       }
 
