@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import user from './modules/user'
 import firebase from './modules/firebase'
+import loading from './modules/loading'
 import createPersistedState from "vuex-persistedstate";
 
 Vue.use(Vuex)
@@ -12,6 +13,7 @@ export default new Vuex.Store({
   })],
   modules: {
     user,
-    firebase
+    firebase,
+    loading
   }
 });

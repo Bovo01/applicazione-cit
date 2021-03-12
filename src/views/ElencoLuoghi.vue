@@ -48,7 +48,9 @@ export default {
     },
   },
   mounted() {
+    this.$store.dispatch("startLoading");
     this.setLuoghi();
+    this.$store.dispatch("stopLoading");
   },
 };
 </script>

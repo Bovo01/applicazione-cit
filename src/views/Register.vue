@@ -57,6 +57,7 @@ export default {
   },
   methods: {
     async register() {
+      this.$store.dispatch("startLoading");
       if (this.username === "") {
         this.error("Devi inserire lo username");
         return;
@@ -93,6 +94,7 @@ export default {
           });
         }
       });
+      this.$store.dispatch("stopLoading");
     },
     async isElementInTable(item) {
       let tmpTable = this.$store.getters.database

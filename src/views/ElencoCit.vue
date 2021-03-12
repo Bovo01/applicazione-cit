@@ -54,7 +54,9 @@ export default {
     },
   },
   mounted() {
+    this.$store.dispatch("startLoading");
     this.setCits();
+    this.$store.dispatch("stopLoading");
   },
 };
 </script>

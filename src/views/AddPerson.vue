@@ -125,11 +125,13 @@ export default {
     },
   },
   mounted() {
+    this.$store.dispatch("startLoading");
     // Metodo di sicurezza contro i non admin
     if (!this.$store.getters.admin) {
       this.$router.push({ name: "Elenco persone" });
     }
     this.setPerson();
+    this.$store.dispatch("stopLoading");
   },
   watch: {
     $route: function (to) {

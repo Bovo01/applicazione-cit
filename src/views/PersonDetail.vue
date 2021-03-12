@@ -56,6 +56,7 @@ export default {
     },
   },
   mounted() {
+    this.$store.dispatch("startLoading");
     let self = this;
     this.$store.getters.database
       .collection("persone")
@@ -66,6 +67,7 @@ export default {
           this.$router.push({ name: "Elenco persone" });
         self.person = response.data();
       });
+    this.$store.dispatch("stopLoading");
   },
 };
 </script>

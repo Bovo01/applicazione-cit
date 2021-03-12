@@ -271,7 +271,11 @@ export default {
       return true;
     },
     async add() {
-      if (!(await this.verifiche())) return;
+      this.$store.dispatch("startLoading");
+      if (!(await this.verifiche())) {
+        this.$store.dispatch("stopLoading");
+        return;
+      }
 
       // Creo le persone mancanti
       let newPersone = this.getNewPersone(this.selected_persons);
@@ -348,9 +352,14 @@ export default {
         },
       });
       this.$router.push({ name: "Elenco cit" });
+      this.$store.dispatch("stopLoading");
     },
     async modifica() {
-      if (!(await this.verifiche())) return;
+      this.$store.dispatch("startLoading");
+      if (!(await this.verifiche())) {
+        this.$store.dispatch("stopLoading");
+        return;
+      }
 
       // Creo le persone mancanti
       let newPersone = this.getNewPersone(this.selected_persons);
@@ -428,6 +437,7 @@ export default {
         },
       });
       this.$router.push({ name: "Elenco cit" });
+      this.$store.dispatch("stopLoading");
     },
     dateToString(date) {
       if (date === undefined || date === null || date === "") return null;
@@ -536,13 +546,16 @@ export default {
     },
   },
   mounted() {
+    this.$store.dispatch("startLoading");
     // Metodo di sicurezza contro i non admin
     if (!this.$store.getters.admin) {
       this.$router.push({ name: "Elenco cit" });
+      this.$store.dispatch("stopLoading");
     }
     this.setCit();
     this.getShortLuoghi();
     this.getShortPersons();
+    this.$store.dispatch("stopLoading");
   },
   watch: {
     $route: function (to) {

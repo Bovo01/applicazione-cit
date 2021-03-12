@@ -1,14 +1,24 @@
 <template>
   <div id="app">
+    <loading
+      :active.sync="$store.getters.isLoading"
+      :can-cancel="false"
+      :is-full-page="true"
+    />
     <router-view />
   </div>
 </template>
 
 <script>
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
 import Firebase from "firebase";
 import "firebase/firestore";
 
 export default {
+  components: {
+    Loading
+  },
   beforeCreate() {
     if (this.$store.state.firebase.firebaseApp === null) {
       // Initialize Firebase

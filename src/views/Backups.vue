@@ -26,8 +26,8 @@ export default {
   },
   data() {
     return {
-      cits: []
-    }
+      cits: [],
+    };
   },
   methods: {
     setCits() {
@@ -54,7 +54,9 @@ export default {
     },
   },
   mounted() {
+    this.$store.dispatch("startLoading");
     this.setCits();
-  }
+    this.$store.dispatch("stopLoading");
+  },
 };
 </script>

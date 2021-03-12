@@ -101,6 +101,7 @@ export default {
   },
   methods: {
     async ripristina() {
+      this.$store.dispatch("startLoading");
       await this.$store.dispatch("copyElement", {
         fromTable: "backup-cit",
         toTable: "cits",
@@ -111,8 +112,10 @@ export default {
         id: this.$route.params.id,
       });
       this.$router.push({ name: "Backups" });
+      this.$store.dispatch("stopLoading");
     },
     async elimina() {
+      this.$store.dispatch("startLoading");
       if (
         !(await this.$confirm(
           "Se eliminerai questa cit non potrai più recuperarla. Sei sicuro di voler procedere?",
@@ -138,6 +141,7 @@ export default {
         id: this.$route.params.id,
       });
       this.$router.push({ name: "Backups" });
+      this.$store.dispatch("stopLoading");
     },
     setCit() {
       let self = this;
@@ -187,7 +191,9 @@ export default {
     },
   },
   mounted() {
+    this.$store.dispatch("startLoading");
     this.setCit();
+    this.$store.dispatch("stopLoading");
   },
 };
 </script>

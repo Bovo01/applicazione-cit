@@ -51,7 +51,9 @@ export default {
     },
   },
   mounted() {
+    this.$store.dispatch("startLoading");
     this.setPersons();
+    this.$store.dispatch("stopLoading");
   },
 };
 </script>

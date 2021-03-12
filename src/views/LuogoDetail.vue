@@ -41,6 +41,7 @@ export default {
     },
   },
   mounted() {
+    this.$store.dispatch("startLoading");
     let self = this;
     this.$store.getters.database
       .collection("luoghi")
@@ -51,6 +52,7 @@ export default {
           this.$router.push({ name: "Elenco luoghi" });
         self.luogo = response.data();
       });
+    this.$store.dispatch("stopLoading");
   },
-}
+};
 </script>

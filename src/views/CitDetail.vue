@@ -102,6 +102,7 @@ export default {
       this.$router.push({ path: `/edit-cit/${this.$route.params.id}` });
     },
     async elimina() {
+      this.$store.dispatch("startLoading");
       // Creo un backup dell'elemento
       await this.$store.dispatch("copyElement", {
         fromTable: "cits",
@@ -114,6 +115,7 @@ export default {
         id: this.$route.params.id,
       });
       this.$router.push({ name: "Elenco cit" });
+      this.$store.dispatch("stopLoading");
     },
     setCit() {
       let self = this;
@@ -163,7 +165,9 @@ export default {
     },
   },
   mounted() {
+    this.$store.dispatch("startLoading");
     this.setCit();
+    this.$store.dispatch("stopLoading");
   },
 };
 </script>

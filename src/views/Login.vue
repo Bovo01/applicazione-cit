@@ -53,6 +53,7 @@ export default {
       this.$router.push({ path: "/registrazione" });
     },
     login() {
+      this.$store.dispatch("startLoading");
       if (this.user === "") {
         this.error("Devi inserire lo username");
         return;
@@ -84,6 +85,7 @@ export default {
         } else {
           self.error("Nome utente o password non sono corretti");
         }
+        this.$store.dispatch("stopLoading");
       });
     },
     error(message) {
