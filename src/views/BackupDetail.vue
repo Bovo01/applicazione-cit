@@ -192,6 +192,10 @@ export default {
   },
   mounted() {
     this.$store.dispatch("startLoading");
+    // Metodo di sicurezza contro i non admin
+    if (!this.$store.getters.admin) {
+      this.$router.push({ name: "Home" });
+    }
     this.setCit();
     this.$store.dispatch("stopLoading");
   },

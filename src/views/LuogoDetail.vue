@@ -42,6 +42,10 @@ export default {
   },
   mounted() {
     this.$store.dispatch("startLoading");
+    // Metodo di sicurezza contro quelli che non hanno permesso di vedere
+    if (!(this.$store.getters.admin || this.$store.getters.permissions)) {
+      this.$router.push({ name: "Elenco luoghi" });
+    }
     let self = this;
     this.$store.getters.database
       .collection("luoghi")

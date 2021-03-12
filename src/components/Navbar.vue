@@ -5,13 +5,15 @@
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
         <b-nav-item to="/home">Home page</b-nav-item>
-        <b-nav-item to="/cits">Elenco cit</b-nav-item>
+        <b-nav-item to="/cits" v-if="$store.getters.permissions || admin">Elenco cit</b-nav-item>
         <b-nav-item to="/add-cit" v-if="admin">Aggiungi cit</b-nav-item>
-        <b-nav-item to="/persone">Elenco persone</b-nav-item>
+        <b-nav-item to="/persone" v-if="$store.getters.permissions || admin">Elenco persone</b-nav-item>
         <b-nav-item to="/add-person" v-if="admin">Aggiungi persona</b-nav-item>
-        <b-nav-item to="/luoghi">Elenco luoghi</b-nav-item>
+        <b-nav-item to="/luoghi" v-if="$store.getters.permissions || admin">Elenco luoghi</b-nav-item>
         <b-nav-item to="/add-luogo" v-if="admin">Aggiungi luogo</b-nav-item>
         <b-nav-item to="/backups" v-if="admin">Backups</b-nav-item>
+        <b-nav-item to="/accept-permissions" v-if="admin">Accetta permessi</b-nav-item>
+        <b-nav-item to="/request-permissions" v-else>Richiedi permessi</b-nav-item>
       </b-navbar-nav>
 
       <!-- Right aligned nav items -->

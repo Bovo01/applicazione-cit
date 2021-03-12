@@ -14,7 +14,10 @@ import LuogoDetail from '../views/LuogoDetail'
 import AddLuogo from '../views/AddLuogo'
 import Backups from '../views/Backups'
 import BackupDetail from '../views/BackupDetail'
+import RequestPermissions from '../views/RequestPermissions'
+import AcceptPermissions from '../views/AcceptPermissions'
 import Profile from '../views/Profile'
+
 
 Vue.use(VueRouter)
 
@@ -86,6 +89,14 @@ const routes = [{
   path: '/backup-detail/:id',
   name: 'Backup detail',
   component: BackupDetail
+}, {
+  path: '/request-permissions',
+  name: 'Request permissions',
+  component: RequestPermissions
+}, {
+  path: '/accept-permissions',
+  name: 'Accept permissions',
+  component: AcceptPermissions
 }, {
   path: '/profile',
   name: 'Profile',

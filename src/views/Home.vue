@@ -30,6 +30,12 @@
         <b-row v-if="$store.getters.admin">
           <router-link to="/backups">Visualizza/Ripristina backups</router-link>
         </b-row>
+        <b-row v-if="$store.getters.admin">
+          <router-link to="/accept-permissions">Accetta permessi di visione/amministratore</router-link>
+        </b-row>
+        <b-row v-else>
+          <router-link to="/request-permissions">Richiedi permessi di visione/amministratore</router-link>
+        </b-row>
       </div>
     </b-container>
   </div>

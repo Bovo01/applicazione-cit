@@ -30,7 +30,7 @@
 
 <script>
 import { mdbInput } from "mdbvue";
-import { login, isAdmin } from "@/plugins/functions.js";
+import { login, isAdmin, getViewPermissions } from "@/plugins/functions.js";
 import CryptoJS from "crypto-js";
 
 export default {
@@ -72,6 +72,11 @@ export default {
           isAdmin(self.user, encryptedPass, self).then((newResponse) => {
             self.$store.commit("setAdmin", newResponse);
           });
+          getViewPermissions(self.user, encryptedPass, self).then(
+            (newResponse) => {
+              self.$store.commit("setPermissions", newResponse);
+            }
+          );
           this.$store.getters.database
             .collection("account")
             .where("user", "==", this.user)

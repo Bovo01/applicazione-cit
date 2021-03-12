@@ -2,8 +2,9 @@ export default {
   state: {
     user: undefined,
     pass: undefined,
+    viewPermission: false,
     admin: false,
-    userId: undefined
+    userId: undefined,
   },
   mutations: {
     setUser(state, user) {
@@ -14,6 +15,9 @@ export default {
     },
     setAdmin(state, admin) {
       state.admin = admin;
+    },
+    setPermissions(state, viewPermission) {
+      state.viewPermission = viewPermission;
     },
     setUserId(state, userId) {
       state.userId = userId;
@@ -26,7 +30,8 @@ export default {
   getters: {
     user: state => state.user,
     pass: state => state.pass,
-    admin: state => state.admin,
-    userId: state => state.userId
+    admin: state => state.admin ?? false,
+    userId: state => state.userId,
+    permissions: state => state.viewPermission ?? false
   }
 }
