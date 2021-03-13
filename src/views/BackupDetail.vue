@@ -115,7 +115,6 @@ export default {
       this.$store.dispatch("stopLoading");
     },
     async elimina() {
-      this.$store.dispatch("startLoading");
       if (
         !(await this.$confirm(
           "Se eliminerai questa cit non potrai più recuperarla. Sei sicuro di voler procedere?",
@@ -135,6 +134,7 @@ export default {
         });
         return;
       }
+      this.$store.dispatch("startLoading");
       // Creo un backup dell'elemento
       this.$store.dispatch("deleteElement", {
         tableName: "backup-cit",

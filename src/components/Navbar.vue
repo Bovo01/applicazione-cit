@@ -15,6 +15,7 @@
       <template slot="title">Cits</template>
       <el-menu-item index="/cits">Elenco cit</el-menu-item>
       <el-menu-item index="/add-cit">Aggiungi cit</el-menu-item>
+      <el-menu-item index="/backups"> Backups </el-menu-item>
     </el-submenu>
     <el-menu-item index="/cits" v-else-if="$store.getters.permissions">
       Elenco cit
@@ -36,10 +37,6 @@
     </el-submenu>
     <el-menu-item index="/luoghi" v-else-if="$store.getters.permissions">
       Elenco luoghi
-    </el-menu-item>
-    <!-- Backups -->
-    <el-menu-item index="/backups" v-if="$store.getters.admin">
-      Backups
     </el-menu-item>
     <!-- Permessi -->
     <el-menu-item index="/accept-permissions" v-if="$store.getters.admin">
