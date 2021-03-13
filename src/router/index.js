@@ -1,23 +1,31 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Login from '../views/Login'
-import Register from '../views/Register'
+// views/
 import Home from '../views/Home'
-import ElencoCit from '../views/ElencoCit'
-import CitDetail from '../views/CitDetail'
-import AddCit from '../views/AddCit'
-import ElencoPersone from '../views/ElencoPersone'
-import PersonDetail from '../views/PersonDetail'
-import AddPerson from '../views/AddPerson'
-import ElencoLuoghi from '../views/ElencoLuoghi'
-import LuogoDetail from '../views/LuogoDetail'
-import AddLuogo from '../views/AddLuogo'
-import Backups from '../views/Backups'
-import BackupDetail from '../views/BackupDetail'
-import RequestPermissions from '../views/RequestPermissions'
-import AcceptPermissions from '../views/AcceptPermissions'
-import ManagePermissions from '../views/ManagePermissions'
-import Profile from '../views/Profile'
+// views/Login/
+import Login from '../views/Login/Login'
+import Register from '../views/Login/Register'
+// views/Cits/
+import ElencoCit from '../views/Cits/ElencoCit'
+import CitDetail from '../views/Cits/CitDetail'
+import AddCit from '../views/Cits/AddCit'
+// views/Cits/Backups
+import Backups from '../views/Cits/Backups/Backups'
+import BackupDetail from '../views/Cits/Backups/BackupDetail'
+// views/Persone/
+import ElencoPersone from '../views/Persone/ElencoPersone'
+import PersonDetail from '../views/Persone/PersonDetail'
+import AddPerson from '../views/Persone/AddPerson'
+// views/Luoghi/
+import ElencoLuoghi from '../views/Luoghi/ElencoLuoghi'
+import LuogoDetail from '../views/Luoghi/LuogoDetail'
+import AddLuogo from '../views/Luoghi/AddLuogo'
+// views/Permessi/
+import RequestPermissions from '../views/Permessi/RequestPermissions'
+import AcceptPermissions from '../views/Permessi/AcceptPermissions'
+import ManagePermissions from '../views/Permessi/ManagePermissions'
+// views/Profilo/
+import Profile from '../views/Profilo/Profile'
 
 
 Vue.use(VueRouter)
@@ -51,9 +59,21 @@ const routes = [{
   name: 'Edit cit',
   component: AddCit
 }, {
+  path: '/backups',
+  name: 'Backups',
+  component: Backups
+}, {
+  path: '/backup-detail/:id',
+  name: 'Backup detail',
+  component: BackupDetail
+}, {
   path: '/persone',
   name: 'Elenco persone',
   component: ElencoPersone
+}, {
+  path: '/person-detail/:id',
+  name: 'Person detail',
+  component: PersonDetail
 }, {
   path: '/add-person',
   name: 'Add person',
@@ -62,10 +82,6 @@ const routes = [{
   path: '/edit-person/:id',
   name: 'Edit person',
   component: AddPerson
-}, {
-  path: '/person-detail/:id',
-  name: 'Person detail',
-  component: PersonDetail
 }, {
   path: '/luoghi',
   name: 'Elenco luoghi',
@@ -82,14 +98,6 @@ const routes = [{
   path: '/edit-luogo/:id',
   name: 'Edit luogo',
   component: AddLuogo
-}, {
-  path: '/backups',
-  name: 'Backups',
-  component: Backups
-}, {
-  path: '/backup-detail/:id',
-  name: 'Backup detail',
-  component: BackupDetail
 }, {
   path: '/request-permissions',
   name: 'Request permissions',
