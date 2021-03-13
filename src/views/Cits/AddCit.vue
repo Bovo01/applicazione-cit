@@ -195,6 +195,7 @@ export default {
       if (this.getNewPersone(this.selected_persons).length > 0) {
         controllatePersone = true;
         let stop;
+        this.$store.dispatch("stopLoading");
         await this.$confirm(
           "Hai inserito delle persone non presenti nel database. Vuoi continuare con la creazione automatica dei profili?",
           "Vuoi creare automaticamente le persone mancanti?",
@@ -209,6 +210,7 @@ export default {
           .catch(() => {
             stop = true;
           });
+        this.$store.dispatch("startLoading");
         if (stop) {
           this.error(
             "Salvataggio della cit annullato. Inserisci manualmente le persone per aggiungere la cit"
@@ -245,6 +247,7 @@ export default {
       }
       // Controllo se il luogo è già stato inserito nel db
       if (this.isNewLuogo(this.selected_luogo)) {
+        this.$store.dispatch("stopLoading");
         let stop;
         await this.$confirm(
           "Hai inserito un luogo non presente nel database. Vuoi continuare con la creazione automatica del luogo?",
@@ -260,6 +263,7 @@ export default {
           .catch(() => {
             stop = true;
           });
+        this.$store.dispatch("startLoading");
         if (stop) {
           this.error(
             "Salvataggio della cit annullato. Inserisci manualmente il luogo per aggiungere la cit"
