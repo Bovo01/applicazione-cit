@@ -2,6 +2,11 @@
   <div>
     <navbar />
     <b-container>
+      <div class="text-center" style="margin-bottom: 1%">
+        <el-button plain type="warning" @click="visualizzaUtenti()">
+          Visualizza tutti gli utenti
+        </el-button>
+      </div>
       <el-table :data="requests" border style="width: 100%">
         <el-table-column prop="user" label="User" width="150" />
         <el-table-column prop="type" label="Tipo richiesta" width="110" />
@@ -34,6 +39,9 @@ export default {
     };
   },
   methods: {
+    visualizzaUtenti() {
+      this.$router.push({ name: "Users permissions" });
+    },
     async setRequests() {
       this.requests = [];
       let response = await this.$store.getters.database
