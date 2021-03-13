@@ -49,6 +49,51 @@ export default {
     },
     async elimina() {
       this.$store.dispatch("startLoading");
+      // Segno quante volte ho utilizzato la persona nelle cit
+      let volteUtilizzatoInCit;
+      // Controllo le cit in cui ha detto qualcosa
+      await this.$store.getters.database
+        .collection("cits")
+        .where("persone", "array-contains", this.$route.params.id)
+        .get()
+        .then((response) => {
+          volteUtilizzatoInCit = response.docs.length;
+        });
+      // Controllo le cit in cui era presente
+      await this.$store.getters.database
+        .collection("cits")
+        .where("spettatori", "array-contains", this.$route.params.id)
+        .get()
+        .then((response) => {
+          volteUtilizzatoInCit += response.docs.length;
+        });
+      // Segno quante volte ho utilizzato il luogo nei backups delle cit
+      let volteUtilizzatoInBackups;
+      // Controllo i backups in cui ha detto qualcosa
+      await this.$store.getters.database
+        .collection("backup-cit")
+        .where("persone", "array-contains", this.$route.params.id)
+        .get()
+        .then((response) => {
+          volteUtilizzatoInBackups = response.docs.length;
+        });
+      // Controllo i backups in cui era presente
+      await this.$store.getters.database
+        .collection("backup-cit")
+        .where("spettatori", "array-contains", this.$route.params.id)
+        .get()
+        .then((response) => {
+          volteUtilizzatoInBackups += response.docs.length;
+        });
+      if (volteUtilizzatoInCit > 0 || volteUtilizzatoInBackups > 0) {
+        this.$store.dispatch("stopLoading");
+        this.$notify.error({
+          title: "Errore",
+          message: `Non posso eliminare questa persona perché è presente in ${volteUtilizzatoInCit} cit ed in ${volteUtilizzatoInBackups} backups`,
+        });
+        return;
+      }
+      // Elimino la persona dal db
       await this.$store.dispatch("deleteElement", {
         tableName: "persone",
         id: this.$route.params.id,

@@ -136,7 +136,7 @@ export default {
       }
       this.$store.dispatch("startLoading");
       // Creo un backup dell'elemento
-      this.$store.dispatch("deleteElement", {
+      await this.$store.dispatch("deleteElement", {
         tableName: "backup-cit",
         id: this.$route.params.id,
       });

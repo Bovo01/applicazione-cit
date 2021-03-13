@@ -34,6 +34,33 @@ export default {
     },
     async elimina() {
       this.$store.dispatch("startLoading");
+      // Segno quante volte ho utilizzato il luogo nelle cit
+      let volteUtilizzatoInCit;
+      await this.$store.getters.database
+        .collection("cits")
+        .where("luogo", "==", this.$route.params.id)
+        .get()
+        .then((response) => {
+          volteUtilizzatoInCit = response.docs.length;
+        });
+      // Segno quante volte ho utilizzato il luogo nei backups delle cit
+      let volteUtilizzatoInBackups;
+      await this.$store.getters.database
+        .collection("backup-cit")
+        .where("luogo", "==", this.$route.params.id)
+        .get()
+        .then((response) => {
+          volteUtilizzatoInBackups = response.docs.length;
+        });
+      if (volteUtilizzatoInCit > 0 || volteUtilizzatoInBackups > 0) {
+        this.$store.dispatch("stopLoading");
+        this.$notify.error({
+          title: "Errore",
+          message: `Non posso eliminare questo luogo perché è utilizzato in ${volteUtilizzatoInCit} cit ed è presente in ${volteUtilizzatoInBackups} backups`,
+        });
+        return;
+      }
+      // Elimino il luogo
       await this.$store.dispatch("deleteElement", {
         tableName: "luoghi",
         id: this.$route.params.id,
