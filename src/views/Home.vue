@@ -7,13 +7,13 @@
         nell'applicazione delle cit
       </h3>
       <div style="margin-top: 5; margin-left: 3%">
-        <b-row>
+        <b-row v-if="$store.getters.permissions">
           <router-link to="/cits">Visualizza tutte le cit</router-link>
         </b-row>
         <b-row v-if="$store.getters.admin">
           <router-link to="/add-cit">Crea una nuova cit</router-link>
         </b-row>
-        <b-row>
+        <b-row v-if="$store.getters.permissions">
           <router-link to="/persone">
             Visualizza le persone che possono dire le cit
           </router-link>
@@ -21,7 +21,7 @@
         <b-row v-if="$store.getters.admin">
           <router-link to="/add-person">Aggiungi una persona</router-link>
         </b-row>
-        <b-row>
+        <b-row v-if="$store.getters.permissions">
           <router-link to="/luoghi">Visualizza i luoghi</router-link>
         </b-row>
         <b-row v-if="$store.getters.admin">

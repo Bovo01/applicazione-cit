@@ -1,50 +1,88 @@
 <template>
-  <b-navbar toggleable="lg" type="dark" variant="info">
-    <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+  <el-menu
+    :default-active="activeIndex"
+    class="el-menu-demo"
+    mode="horizontal"
+    @select="handleSelect"
+    background-color="#545c64"
+    text-color="#fff"
+    active-text-color="#ffd04b"
+  >
+    <!-- Home page -->
+    <el-menu-item index="/home">Home</el-menu-item>
+    <!-- Cit -->
+    <el-submenu v-if="$store.getters.admin" index="/dropdown-cits">
+      <template slot="title">Cits</template>
+      <el-menu-item index="/cits">Elenco cit</el-menu-item>
+      <el-menu-item index="/add-cit">Aggiungi cit</el-menu-item>
+    </el-submenu>
+    <el-menu-item index="/cits" v-else-if="$store.getters.permissions">
+      Elenco cit
+    </el-menu-item>
+    <!-- Persone -->
+    <el-submenu v-if="$store.getters.admin" index="/dropdown-persone">
+      <template slot="title">Persone</template>
+      <el-menu-item index="/persone">Elenco persone</el-menu-item>
+      <el-menu-item index="/add-person">Aggiungi persona</el-menu-item>
+    </el-submenu>
+    <el-menu-item index="/persone" v-else-if="$store.getters.permissions">
+      Elenco persone
+    </el-menu-item>
+    <!-- Luoghi -->
+    <el-submenu v-if="$store.getters.admin" index="/dropdown-luoghi">
+      <template slot="title">Luoghi</template>
+      <el-menu-item index="/luoghi">Elenco luoghi</el-menu-item>
+      <el-menu-item index="/add-luogo">Aggiungi luogo</el-menu-item>
+    </el-submenu>
+    <el-menu-item index="/luoghi" v-else-if="$store.getters.permissions">
+      Elenco luoghi
+    </el-menu-item>
+    <!-- Backups -->
+    <el-menu-item index="/backups" v-if="$store.getters.admin">
+      Backups
+    </el-menu-item>
+    <!-- Permessi -->
+    <el-menu-item index="/accept-permissions" v-if="$store.getters.admin">
+      Accetta permessi
+    </el-menu-item>
+    <el-menu-item index="/request-permissions" v-else>
+      Richiedi permessi
+    </el-menu-item>
 
-    <b-collapse id="nav-collapse" is-nav>
-      <b-navbar-nav>
-        <b-nav-item to="/home">Home page</b-nav-item>
-        <b-nav-item to="/cits" v-if="$store.getters.permissions || admin">Elenco cit</b-nav-item>
-        <b-nav-item to="/add-cit" v-if="admin">Aggiungi cit</b-nav-item>
-        <b-nav-item to="/persone" v-if="$store.getters.permissions || admin">Elenco persone</b-nav-item>
-        <b-nav-item to="/add-person" v-if="admin">Aggiungi persona</b-nav-item>
-        <b-nav-item to="/luoghi" v-if="$store.getters.permissions || admin">Elenco luoghi</b-nav-item>
-        <b-nav-item to="/add-luogo" v-if="admin">Aggiungi luogo</b-nav-item>
-        <b-nav-item to="/backups" v-if="admin">Backups</b-nav-item>
-        <b-nav-item to="/accept-permissions" v-if="admin">Accetta permessi</b-nav-item>
-        <b-nav-item to="/request-permissions" v-else>Richiedi permessi</b-nav-item>
-      </b-navbar-nav>
-
-      <!-- Right aligned nav items -->
-      <b-navbar-nav class="ml-auto">
-        <b-nav-item-dropdown right>
-          <!-- Using 'button-content' slot -->
-          <template #button-content>
-            <i class="fas fa-user"></i>
-          </template>
-          <b-dropdown-item to="/profile">Profilo</b-dropdown-item>
-          <b-dropdown-item @click="logout()"> Logout </b-dropdown-item>
-        </b-nav-item-dropdown>
-      </b-navbar-nav>
-    </b-collapse>
-  </b-navbar>
+    <!-- Dropdown a destra (profilo) -->
+    <el-submenu index="/dropdown-profilo" style="float: right">
+      <template slot="title"><i class="fas fa-user" /></template>
+      <el-menu-item index="/profile"> Profilo </el-menu-item>
+      <el-menu-item @click="logout()"> Logout </el-menu-item>
+    </el-submenu>
+  </el-menu>
 </template>
 
 <script>
 import { login } from "@/plugins/functions.js";
 
 export default {
+  data() {
+    return {
+      activeIndex: "",
+    };
+  },
   methods: {
     logout() {
       this.$store.commit("logout");
       this.$router.push({ name: "Login" });
     },
+    handleSelect(path) {
+      if (path && this.$route.path !== path) this.$router.push({ path });
+    },
   },
   mounted() {
+    this.$store.dispatch("startLoading");
     let user = this.$store.getters.user;
     let pass = this.$store.getters.pass;
     login(user, pass, this);
+    this.activeIndex = this.$route.path;
+    this.$store.dispatch("stopLoading");
   },
   computed: {
     admin: function () {
