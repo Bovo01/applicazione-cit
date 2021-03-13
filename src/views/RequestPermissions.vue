@@ -20,7 +20,12 @@
         </b-row>
         <!-- Bottoni footer -->
         <div class="text-center" style="margin-top: 10%">
-          <el-button v-if="!$store.getters.permissions" type="primary" plain @click="viewPermissions()">
+          <el-button
+            v-if="!$store.getters.permissions"
+            type="primary"
+            plain
+            @click="viewPermissions()"
+          >
             Richiedi permessi di visione
           </el-button>
           <el-button type="warning" plain @click="adminPermissions()">
@@ -28,10 +33,16 @@
           </el-button>
         </div>
       </div>
-      <div v-else>
+      <div v-else-if="!bloccato">
         <h1>
           Hai già effettuato una richiesta. Aspetta che venga accettata o
           rifiutata per poterne fare un'altra
+        </h1>
+      </div>
+      <div v-else>
+        <h1>
+          Sei stato bloccato da un amministratore, quindi non puoi effettuare
+          richieste finché non sarai sbloccato
         </h1>
       </div>
     </b-container>
@@ -50,6 +61,7 @@ export default {
       numCols: 4,
       message: "",
       canRequest: false,
+      bloccato: false,
     };
   },
   methods: {
@@ -85,12 +97,21 @@ export default {
     // Controllo se è già stata effettuata una richiesta da parte di questo utente
     let self = this;
     await this.$store.getters.database
-      .collection("view-requests")
-      .where("userId", "==", this.$store.getters.userId)
+      .collection("account")
+      .doc(this.$store.getters.userId)
       .get()
       .then((response) => {
-        self.canRequest = response.docs.length <= 0;
+        self.bloccato = response.data().bloccato ?? false;
       });
+    if (!this.bloccato)
+      await this.$store.getters.database
+        .collection("view-requests")
+        .where("userId", "==", this.$store.getters.userId)
+        .get()
+        .then((response) => {
+          self.canRequest = response.docs.length <= 0;
+        });
+    else this.canRequest = false;
     this.$store.dispatch("stopLoading");
   },
 };

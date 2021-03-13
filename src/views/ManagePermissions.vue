@@ -5,7 +5,7 @@
       <el-table :data="users" border style="width: 100%">
         <el-table-column prop="user" label="Nome utente" />
         <el-table-column prop="permissions" label="Permessi" />
-        <el-table-column fixed="right" label="Fornisci permessi" width="300">
+        <el-table-column fixed="right" label="Fornisci permessi" width="331">
           <template slot-scope="scope">
             <el-button
               @click="removePermissions(scope.$index)"
@@ -30,6 +30,24 @@
               v-if="users[scope.$index].permissions !== 'admin'"
             >
               Permessi di amministratore
+            </el-button>
+            <el-button
+              @click="blocca(scope.$index)"
+              type="text"
+              style="color: red"
+              size="small"
+              v-if="!users[scope.$index].bloccato"
+            >
+              Blocca
+            </el-button>
+            <el-button
+              @click="blocca(scope.$index, false)"
+              type="text"
+              style="color: red"
+              size="small"
+              v-else
+            >
+              Sblocca
             </el-button>
           </template>
         </el-table-column>
@@ -131,6 +149,31 @@ export default {
       this.users[index].permissions = "admin";
       this.$store.dispatch("stopLoading");
     },
+    async blocca(index, blocca = true) {
+      this.$store.dispatch("startLoading");
+      await this.$store.dispatch("editElement", {
+        tableName: "account",
+        id: this.users[index].id,
+        item: {
+          bloccato: blocca,
+        },
+      });
+      let self = this;
+      await this.$store.getters.database
+        .collection("view-requests")
+        .where("userId", "==", this.users[index].id)
+        .get()
+        .then((response) => {
+          for (let doc of response.docs) {
+            self.$store.dispatch("deleteElement", {
+              tableName: "view-requests",
+              id: doc.id,
+            });
+          }
+        });
+      this.users[index].bloccato = blocca;
+      this.$store.dispatch("stopLoading");
+    },
     async setUsers() {
       this.users = [];
       let self = this;
@@ -148,6 +191,7 @@ export default {
                 : account.data().viewPermission
                 ? "view"
                 : "none",
+              bloccato: account.data().bloccato ?? false,
             });
           }
         });
