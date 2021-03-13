@@ -39,9 +39,13 @@
       Elenco luoghi
     </el-menu-item>
     <!-- Permessi -->
-    <el-menu-item index="/accept-permissions" v-if="$store.getters.admin">
-      Accetta permessi
-    </el-menu-item>
+    <el-submenu v-if="$store.getters.admin" index="/dropdown-permessi">
+      <template slot="title">Gestione permessi</template>
+      <el-menu-item index="/accept-permissions">
+        Visualizza richieste
+      </el-menu-item>
+      <el-menu-item index="/manage-permissions">Gestisci permessi</el-menu-item>
+    </el-submenu>
     <el-menu-item index="/request-permissions" v-else>
       Richiedi permessi
     </el-menu-item>

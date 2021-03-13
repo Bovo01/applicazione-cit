@@ -16,7 +16,7 @@ import Backups from '../views/Backups'
 import BackupDetail from '../views/BackupDetail'
 import RequestPermissions from '../views/RequestPermissions'
 import AcceptPermissions from '../views/AcceptPermissions'
-import UsersPermissions from '../views/UsersPermissions'
+import ManagePermissions from '../views/ManagePermissions'
 import Profile from '../views/Profile'
 
 
@@ -99,9 +99,9 @@ const routes = [{
   name: 'Accept permissions',
   component: AcceptPermissions
 }, {
-  path: '/users-permissions',
-  name: 'Users permissions',
-  component: UsersPermissions
+  path: '/manage-permissions',
+  name: 'Manage permissions',
+  component: ManagePermissions
 }, {
   path: '/profile',
   name: 'Profile',
