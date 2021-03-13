@@ -53,7 +53,7 @@
     <el-submenu index="/dropdown-profilo" style="float: right">
       <template slot="title"><i class="fas fa-user" /></template>
       <el-menu-item index="/profile"> Profilo </el-menu-item>
-      <el-menu-item @click="logout()"> Logout </el-menu-item>
+      <el-menu-item @click="logout()" index="logout"> Logout </el-menu-item>
     </el-submenu>
   </el-menu>
 </template>
