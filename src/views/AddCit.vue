@@ -566,6 +566,8 @@ export default {
         this.date = "";
         this.ora = "";
         this.selected_persons = [];
+        this.selected_spectators = [];
+        this.selected_luogo = "";
       } else {
         this.setCit();
       }
