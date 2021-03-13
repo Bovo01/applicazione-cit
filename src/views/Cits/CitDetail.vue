@@ -110,7 +110,7 @@ export default {
         id: this.$route.params.id,
       });
       // Elimino l'elemento
-      this.$store.dispatch("deleteElement", {
+      await this.$store.dispatch("deleteElement", {
         tableName: "cits",
         id: this.$route.params.id,
       });

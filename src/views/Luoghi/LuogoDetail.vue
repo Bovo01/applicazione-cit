@@ -32,11 +32,13 @@ export default {
     edit() {
       this.$router.push({ path: `/edit-luogo/${this.$route.params.id}` });
     },
-    elimina() {
-      this.$store.dispatch("deleteElement", {
+    async elimina() {
+      this.$store.dispatch("startLoading");
+      await this.$store.dispatch("deleteElement", {
         tableName: "luoghi",
         id: this.$route.params.id,
       });
+      this.$store.dispatch("stopLoading");
       this.$router.push({ name: "Elenco luoghi" });
     },
   },
